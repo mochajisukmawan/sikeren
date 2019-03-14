@@ -296,5 +296,9 @@
   {
     path: '/uang-saku/',
     url: './pagesikeren/uangsaku/uang-saku.html',
+  },
+  {
+    path: '/kehadiran/',
+    url: './pagesikeren/kehadiran/kehadiran.html',
   }
 ];
