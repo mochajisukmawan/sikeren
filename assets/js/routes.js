@@ -286,8 +286,11 @@
     url: './pagesikeren/absen/menu-absen.html',
   },
   {
-    path: '/menu-absen/',
+    path: '/absen-pagi/',
+    url: './pagesikeren/absen/absen-pagi.html',
+  },
+  {
+    path: '/uang-saku/',
     url: './pagesikeren/uangsaku/uang-saku.html',
   }
-
 ];
