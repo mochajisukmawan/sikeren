@@ -290,6 +290,10 @@
     url: './pagesikeren/absen/absen-pagi.html',
   },
   {
+    path: '/absen-sore/',
+    url: './pagesikeren/absen/absen-sore.html',
+  },
+  {
     path: '/uang-saku/',
     url: './pagesikeren/uangsaku/uang-saku.html',
   }
