@@ -282,7 +282,12 @@
       url: './pages/edit-leavetype.html',
   },
   {
-      path: '/menu-absen/',
-      url: './pagesikeren/menu-absen.html',
+    path: '/menu-absen/',
+    url: './pagesikeren/absen/menu-absen.html',
+  },
+  {
+    path: '/menu-absen/',
+    url: './pagesikeren/uangsaku/uang-saku.html',
   }
+
 ];
