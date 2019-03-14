@@ -41,7 +41,6 @@ var app  = new Framework7({
 	on: {
     pageInit(page) {
       if (page.name === 'index') {
-		getchart();
       }
 			if(page.name === 'tasks'){
 				$('#f').load('http://10.64.5.40/absen/login');
@@ -50,7 +49,6 @@ var app  = new Framework7({
 	pageAfterIn(page) {
 		console.log(page);
       if (page.name === 'index') {
-		getchart();
       }
     },
   }
@@ -95,80 +93,3 @@ $(document).ready(function($) {
 
 	$.Sidemenu.init();
 });
-
-/* Chart */
-
-function getchart(){
-
-	// Bar Chart
-
-	var barChartData = {
-		labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
-		datasets: [{
-			label: 'Dataset 1',
-			backgroundColor: 'rgba(58, 87, 196, 0.6)',
-			borderColor: 'rgba(58, 87, 196, 1))',
-			borderWidth: 1,
-			data: [35, 59, 80, 81, 56, 55, 40]
-		}, {
-			label: 'Dataset 2',
-			backgroundColor: 'rgba(252, 96, 117, 0.5)',
-			borderColor: 'rgba(252, 96, 117, 1)',
-			borderWidth: 1,
-			data: [28, 48, 40, 19, 86, 27, 90]
-		}]
-
-	};
-
-	var ctx = document.getElementById('bargraph').getContext('2d');
-	window.myBar = new Chart(ctx, {
-		type: 'bar',
-		data: barChartData,
-		options: {
-			responsive: true,
-			legend: {
-				display: false,
-			}
-		}
-	});
-
-	// Line Chart
-
-	var lineChartData = {
-		labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
-
-		datasets: [{
-			label: 'My First dataset',
-			backgroundColor: 'rgba(58, 87, 196, 0.2)',
-			borderColor: 'rgba(58, 87, 196, 1)',
-			pointBackgroundColor: 'rgba(58, 87, 196, 1)',
-			borderWidth: 2,
-			data: [35, 59, 80, 81, 56, 55, 40],
-
-		}, {
-			label: 'My Second dataset',
-			backgroundColor: 'rgba(252, 96, 117, 0.2)',
-			borderColor: 'rgba(252, 96, 117, 1)',
-			pointBackgroundColor: 'rgba(252, 96, 117, 1)',
-			borderWidth: 2,
-			data: [28, 48, 40, 19, 86, 27, 90],
-		}]
-
-	};
-
-	var linectx = document.getElementById('canvas').getContext('2d');
-	window.myLine = new Chart(linectx, {
-	type: 'line',
-	data: lineChartData,
-	options: {
-		responsive: true,
-		legend: {
-			display: false,
-		},
-		tooltips: {
-			mode: 'index',
-			intersect: false,
-		}
-	}
-	});
-}

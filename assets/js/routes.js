@@ -280,5 +280,9 @@
   {
       path: '/edit-leavetype/',
       url: './pages/edit-leavetype.html',
+  },
+  {
+      path: '/menu-absen/',
+      url: './pagesikeren/menu-absen.html',
   }
 ];
