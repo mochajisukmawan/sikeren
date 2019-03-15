@@ -304,5 +304,9 @@
   {
     path: '/raport/',
     url: './pagesikeren/raport/raport.html',
+  },
+  {
+    path: '/kinerja-harian/',
+    url: './pagesikeren/kinerjaharian/kinerja-harian.html',
   }
 ];
