@@ -300,5 +300,9 @@
   {
     path: '/kehadiran/',
     url: './pagesikeren/kehadiran/kehadiran.html',
+  },
+  {
+    path: '/raport/',
+    url: './pagesikeren/raport/raport.html',
   }
 ];
