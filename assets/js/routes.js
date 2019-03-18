@@ -1,8 +1,51 @@
+function is_login(callback){
+  var datas = new FormData();
+  datas.append("user_name", "NR.000012");
+  datas.append("user_password", "taekwondo");
+
+  $.ajax({
+     type: "POST",
+     url: "http://magang.bankjateng.co.id/api/loginpeserta",
+     data: datas,
+     processData: false,
+     contentType: false,
+     success: function(data) {
+       if(data.error == true){
+         if (typeof callback == "function") {
+             callback(data);
+         }
+       }
+     },
+     error: function(data) {
+       if (typeof callback == "function") {
+           callback(data);
+       }
+     }
+   });
+}
+
+
   var routes = [
-  // Index page
   {
     path: '/',
     url: './index.html',
+    on: {
+        pageBeforeIn: function(event, page) {
+
+        },
+        pageAfterIn: function(event, page) {
+          console.log("index after in");
+        },
+        pageInit: function(event, page) {
+          is_login(function(data){
+            var app = page.app
+            app.router.navigate('/login/');
+          });
+        },
+        pageBeforeRemove: function(event, page) {
+          console.log("index before leave");
+        },
+    }
   },
   {
     path: '/login/',
@@ -10,7 +53,7 @@
   },
   {
     path: '/register/',
-    url: './pages/register.html',
+    url: './pages/index.html',
   },
   {
       path: '/forgot-password/',
@@ -284,6 +327,25 @@
   {
     path: '/menu-absen/',
     url: './pagesikeren/absen/menu-absen.html',
+    async(routeTo, routeFrom, resolve, reject) {
+      is_login(function(data){
+        resolve({ url: 'pages/login.html' });
+      });
+    } ,
+    on: {
+        pageBeforeIn: function(event, page) {
+          console.log("index before in");
+        },
+        pageAfterIn: function(event, page) {
+          console.log("index after in");
+        },
+        pageInit: function(event, page) {
+          console.log("index in");
+        },
+        pageBeforeRemove: function(event, page) {
+          console.log("index before leave");
+        },
+    }
   },
   {
     path: '/absen-pagi/',

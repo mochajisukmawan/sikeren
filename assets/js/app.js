@@ -37,21 +37,7 @@ var app  = new Framework7({
 		grid: true,
 	},
 	// App routes
-	routes: routes,
-	on: {
-    pageInit(page) {
-      if (page.name === 'index') {
-      }
-			if(page.name === 'tasks'){
-				$('#f').load('http://10.64.5.40/absen/login');
-			}
-    },
-	pageAfterIn(page) {
-		console.log(page);
-      if (page.name === 'index') {
-      }
-    },
-  }
+	routes: routes
 });
 
 // Sidebar
