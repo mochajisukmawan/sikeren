@@ -300,5 +300,13 @@
   {
     path: '/kehadiran/',
     url: './pagesikeren/kehadiran/kehadiran.html',
+  },
+  {
+    path: '/raport/',
+    url: './pagesikeren/raport/raport.html',
+  },
+  {
+    path: '/kinerja-harian/',
+    url: './pagesikeren/kinerjaharian/kinerja-harian.html',
   }
 ];
