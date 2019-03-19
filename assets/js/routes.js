@@ -2,7 +2,6 @@ function is_login(callback){
   var datas = new FormData();
   datas.append("user_name", "NR.000012");
   datas.append("user_password", "taekwondo");
-
   $.ajax({
      type: "POST",
      url: "http://magang.bankjateng.co.id/api/loginpeserta",
