@@ -80,6 +80,13 @@ $(document).ready(function($) {
 	$.Sidemenu.init();
 });
 function is_login(callback){
+	if(localStorage.getItem("session") == null){
+		if (typeof callback == "function") {
+				callback();
+		}
+	}
+}
+function authenticate(callback){
   if(localStorage.getItem("session") != null){
     var session = JSON.parse(localStorage.getItem("session"));
     var datas = new FormData();
@@ -87,7 +94,7 @@ function is_login(callback){
     datas.append("user_password", session.hash);
     $.ajax({
        type: "POST",
-       url: "http://magang.bankjateng.co.id/api/validation",
+       url: "http://10.64.5.40/sikeren/api/validation",
        data: datas,
        processData: false,
        contentType: false,

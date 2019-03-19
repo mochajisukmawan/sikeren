@@ -9,7 +9,7 @@ var routes = [
         console.log("index after in");
       },
       pageInit: function(event, page) {
-        is_login(function(data){
+        authenticate(function(data){
           var app = page.app
           app.router.navigate('/login/');
         });
@@ -27,7 +27,7 @@ var routes = [
   path: '/menu-absen/',
   url: './pagesikeren/absen/menu-absen.html',
   async(routeTo, routeFrom, resolve, reject) {
-    is_login(function(data){
+    is_login(function(){
       resolve({ url: 'pages/login.html' });
     });
   },
@@ -50,7 +50,7 @@ var routes = [
   path: '/absen-pagi/',
   url: './pagesikeren/absen/absen-pagi.html',
   async(routeTo, routeFrom, resolve, reject) {
-    is_login(function(data){
+    is_login(function(){
       resolve({ url: 'pages/login.html' });
     });
   },
