@@ -75,7 +75,82 @@ $(document).ready(function($) {
 	var calendarDefault = app.calendar.create({
   input: '#bod'
 });
+//==============================================================================
 	// Sidebar Initiate
-
 	$.Sidemenu.init();
 });
+function is_login(callback){
+  if(localStorage.getItem("session") != null){
+    var session = JSON.parse(localStorage.getItem("session"));
+    var datas = new FormData();
+    datas.append("user_name", session.kode_register);
+    datas.append("user_password", session.hash);
+    $.ajax({
+       type: "POST",
+       url: "http://magang.bankjateng.co.id/api/validation",
+       data: datas,
+       processData: false,
+       contentType: false,
+       success: function(data) {
+         if(data.error == true){
+           if (typeof callback == "function") {
+               callback(data);
+           }
+         }
+       },
+       error: function(data) {
+         if (typeof callback == "function") {
+             callback(data);
+         }
+       }
+     });
+  }else{
+    if (typeof callback == "function") {
+        callback(0);
+    }
+  }
+}
+app.on('formAjaxBeforeSend', function (formEl, data, xhr) {
+	app.preloader.show();
+});
+app.on('formAjaxSuccess', function (formEl, data, xhr) {
+	app.preloader.hide();
+	if($(formEl).attr('id')=="formlogin"){
+		var output = JSON.parse(xhr.responseText);
+		if(output.error == false){
+			localStorage.setItem("session", xhr.responseText);
+			app.router.navigate('/');
+		}else{
+			//kondisi jika login tidak berhasil
+			var toastTop = app.toast.create({
+			  text: 'Kombinasi Kode register & Password Tidak Sesuai',
+			  position: 'top',
+			  closeTimeout: 2000,
+			});
+			toastTop.open();
+		}
+	}
+});
+app.on('formAjaxError', function (formEl, data, xhr) {
+	app.preloader.hide();
+});
+
+function logout(){
+  app.dialog.create({
+      title: 'Logout Confirm',
+      text: 'Apakah anda yakin ingin keluar ?',
+      buttons: [{
+              text: 'No',
+              onClick: function() {}
+          },
+          {
+              text: 'Yes',
+              onClick: function() {
+                  localStorage.removeItem("session");
+									app.router.navigate('/login/');
+              }
+          }
+      ],
+      verticalButtons: false,
+  }).open();
+}
