@@ -79,6 +79,64 @@ $(document).ready(function($) {
 	// Sidebar Initiate
 	$.Sidemenu.init();
 });
+function autocomplete(selector,urlx){
+	var autocompleteStandaloneAjax = app.autocomplete.create({
+			openIn: 'popup', //open in page
+			openerEl: selector, //link that opens autocomplete
+			multiple: false, //allow multiple values
+			valueProperty: 'id', //object's "value" property name
+			textProperty: 'name', //object's "text" property name
+			limit: 20,
+			closeOnSelect: true,
+			preloader: true, //enable preloader
+			source: function(query, render) {
+					var autocomplete = this;
+					var results = [];
+					if (query.length === 0) {
+							render(results);
+							return;
+					}
+					// Show Preloader
+					autocomplete.preloaderShow();
+					// Do Ajax request to Autocomplete data
+					app.request({
+							url: urlx,
+							method: 'POST',
+							dataType: 'json',
+							//send "query" to server. Useful in case you generate response dynamically
+							data: {query: query},
+							success: function(data) {
+									// Find matched items
+									for (var i = 0; i < data.length; i++) {
+											if (data[i].name.toLowerCase().indexOf(query.toLowerCase()) >= 0) results.push(data[i]);
+									}
+									// Hide Preoloader
+									autocomplete.preloaderHide();
+									// Render items by passing array with result items
+									render(results);
+							}
+					});
+			},
+			on: {
+					opened: function() {
+							$('.autocomplete-page .navbar-inner').css("background-color", "#007aff");
+								app.preloader.hide();
+					},
+					change: function(value) {
+							var itemText = [],
+									inputValue = [];
+							for (var i = 0; i < value.length; i++) {
+									itemText.push(value[i].name);
+									inputValue.push(value[i].id);
+							}
+							// Add item text value to item-after
+							$$(selector).find('.item-after').text(itemText.join(', '));
+							// Add item value to input value
+							$$(selector).find('input').val(inputValue.join(', '));
+					},
+			},
+	});
+}
 function is_login(callback){
 	if(localStorage.getItem("session") == null){
 		if (typeof callback == "function") {

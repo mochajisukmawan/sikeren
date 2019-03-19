@@ -4,6 +4,7 @@ var routes = [
   url: './index.html',
   on: {
       pageBeforeIn: function(event, page) {
+        console.log("index befioe in");
       },
       pageAfterIn: function(event, page) {
         console.log("index after in");
@@ -79,6 +80,26 @@ var routes = [
 {
   path: '/uang-saku/',
   url: './pagesikeren/uangsaku/uang-saku.html',
+  async(routeTo, routeFrom, resolve, reject) {
+    is_login(function(){
+      resolve({ url: 'pages/login.html' });
+    });
+  },
+  on: {
+      pageBeforeIn: function(event, page) {
+        console.log("index before in");
+      },
+      pageAfterIn: function(event, page) {
+
+        $("#waktu").html('<option value="2018-12">Desember 2018</option><option value="2019-01">Januari 2019</option>');
+      },
+      pageInit: function(event, page) {
+        console.log("index in");
+      },
+      pageBeforeRemove: function(event, page) {
+        console.log("index before leave");
+      },
+  }
 },
 {
   path: '/kehadiran/',
