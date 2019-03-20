@@ -40,36 +40,8 @@ var app  = new Framework7({
 	routes: routes,
 	on: {
 		pageInit(page) {
-			if (page.name == 'uang-saku') {
-				var no_registrasi = new FormData();
-				no_registrasi.append("nomor_register", "1");
-				var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-
-					$.ajax({
-						 type: "POST",
-						 url: "http://10.64.5.40/sikeren/api/uang_saku_bydate",
-						 data: no_registrasi,
-						 processData: false,
-						 contentType: false,
-						 success: function(data) {
-								var periode = data.periode;
-						 		for(var i in periode){
-									var date = periode[i].periode.split("-");
-									var tahun = date[0];
-									var bulan = date[1]
-						 			$("#waktu").append('<option value="'+periode[i].periode+'">'+months[bulan-1]+" "+tahun+'</option>');
-					 			}
-
-						 },
-						 error: function(data) {
-						 }
-					 });
-			}
 		},
 	pageAfterIn(page) {
-			if (page.name == 'uang-saku') {
-
-			}
 		},
 	}
 });
@@ -255,7 +227,7 @@ function logout(){
 };
 
 function cari_us(){
-
+	app.preloader.show();
  var tanggal_us = $('#waktu').val();
 
 	var datas = new FormData();
@@ -268,7 +240,7 @@ function cari_us(){
 		 processData: false,
 		 contentType: false,
 		 success: function(data) {
-			 console.log(data);
+			 app.preloader.hide();
 			 $('.us').html("Rp "+data.uang_saku);
 			 $('.tp').html("Rp "+data.t_penampilan);
 			 $('.tbks').html("Rp "+data.t_bpjs_kes);
