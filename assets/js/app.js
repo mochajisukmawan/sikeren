@@ -303,3 +303,6 @@ function cari_kehadiran(){
 		 }
 	 });
 }
+function abs_pagi(){
+	app.router.navigate('/pertanyaan-1/');
+}
