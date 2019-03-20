@@ -257,10 +257,16 @@ function logout(){
 function cari_us(){
 
  var tanggal_us = $('#waktu').val();
+<<<<<<< HEAD
  var session = JSON.parse(localStorage.getItem("session"));
  var nomor_register = session.nomor_register;
 	var datas = new FormData();
 	datas.append("nomor_register", nomor_register);
+=======
+
+	var datas = new FormData();
+	datas.append("nomor_register", "1");
+>>>>>>> 956ff77d49de369203d36c59d950b410cac81672
 	datas.append("bulan_tahun", tanggal_us);
 	$.ajax({
 		 type: "POST",
