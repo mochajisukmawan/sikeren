@@ -92,9 +92,10 @@ var routes = [
       pageAfterIn: function(event, page) {
         app.preloader.show();
          var tanggal_us = $('#waktu').val();
-
-        	var datas = new FormData();
-        	datas.append("nomor_register", "1");
+         var session = JSON.parse(localStorage.getItem("session"));
+         var nomor_register = session.nomor_register;
+        var datas = new FormData();
+        	datas.append("nomor_register", nomor_register);
         	datas.append("bulan_tahun", tanggal_us);
         	$.ajax({
         		 type: "POST",
@@ -117,7 +118,9 @@ var routes = [
       },
       pageInit: function(event, page) {
         var no_registrasi = new FormData();
-        no_registrasi.append("nomor_register", "1");
+        var session = JSON.parse(localStorage.getItem("session"));
+        var nomor_register = session.nomor_register;
+        no_registrasi.append("nomor_register", nomor_register);
         var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
           $.ajax({
