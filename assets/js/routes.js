@@ -136,5 +136,15 @@ var routes = [
 {
   path: '/kinerja-harian/',
   url: './pagesikeren/kinerjaharian/kinerja-harian.html',
+},
+{
+  path: '/budaya/',
+  url: './pagesikeren/budaya/budaya.html',
+},
+{
+  path: '/pertanyaan-1/',
+  url: './pagesikeren/absen/pertanyaan-1.html',
 }
+
+
 ];
