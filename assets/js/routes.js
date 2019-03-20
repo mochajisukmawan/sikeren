@@ -14,6 +14,9 @@ var routes = [
           var app = page.app
           app.router.navigate('/login/');
         });
+        var session = JSON.parse(localStorage.getItem("session"));
+        console.log(session);
+        $("#nama").append(session.nama_panggilan);
       },
       pageBeforeRemove: function(event, page) {
         console.log("index before leave");
