@@ -228,9 +228,9 @@ function logout(){
 
 function cari_us(){
 	app.preloader.show();
- var tanggal_us = $('#waktu').val();
- var session = JSON.parse(localStorage.getItem("session"));
- var nomor_register = session.nomor_register;
+	var tanggal_us = $('#waktu').val();
+	var session = JSON.parse(localStorage.getItem("session"));
+	var nomor_register = session.nomor_register;
 	var datas = new FormData();
 	datas.append("nomor_register", nomor_register);
 	datas.append("bulan_tahun", tanggal_us);
@@ -248,6 +248,50 @@ function cari_us(){
 			 $('.tbkn').html("Rp "+data.t_bpjs_ktn);
 			 $('.um').html("Rp "+data.uang_makan);
 			 $('.thp').html("Rp "+data.take_home_pay);
+		 },
+		 error: function(data) {
+		 }
+	 });
+}
+function cari_kehadiran(){
+	$("#list").html("");
+	app.preloader.show();
+	var tanggal_us = $('#waktu').val();
+	var session = JSON.parse(localStorage.getItem("session"));
+	var nomor_register = session.nomor_register;
+	var datas = new FormData();
+	datas.append("nomor_register", nomor_register);
+	datas.append("bulan_tahun", tanggal_us);
+	$.ajax({
+		 type: "POST",
+		 url: "http://10.64.5.40/sikeren/api/kehadiran",
+		 data: datas,
+		 processData: false,
+		 contentType: false,
+		 success: function(data) {
+			 app.preloader.hide();
+			 console.log(data);
+			 var kehadiran=data.kehadiran;
+			 for(var i in kehadiran){
+				 $("#list").append(`
+					 <li>
+   					<a class="item-link item-content">
+   						<div class="item-inner">
+   							<div class="item-title-row">
+   								<div class="item-title">Tanggal</div>
+   								<div class="item-after inv-amount"">`+kehadiran[i].jam_in+`</div>
+   							</div>
+   							<div class="item-subtitle"><span class="inv-amount">`+kehadiran[i].tanggal+`</span> <span class="inv-status" id="jam_out">`+kehadiran[i].jam_out+`</span></div>
+   						</div>
+   					</a>
+   				 </li>
+
+					 `);
+				 // $('#tgl').html(""+data.tanggal);
+				 // $('#jam_in').html("Jam In "+data.jam_in);
+				 // $('#jam_out').html("Jam Out "+data.jam_out);
+			 }
+
 		 },
 		 error: function(data) {
 		 }

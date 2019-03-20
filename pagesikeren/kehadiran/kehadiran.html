@@ -22,14 +22,13 @@
                 <div class="row">
                   <div class="col-75 tablet-75">
                     <div class="item-input-wrap input-dropdown-wrap">
-                      <select placeholder="Please choose...">
-                        <option value="januari|2019">January 2019</option>
-                        <option value="Febuary|2019">Febuary 2019</option>
+											<select placeholder="Please choose..." id="waktu">
+
                       </select>
                     </div>
                   </div>
                   <div class="col-25 tablet-25">
-                     <button class="col button button-raised">Cari</button>
+                     <button class="col button button-raised" onclick="cari_kehadiran()">Cari</button>
                   </div>
                 </div>
               </div>
@@ -39,40 +38,8 @@
       </div>
       <!-- === -->
       <div class="list no-hairlines media-list inv-list">
-  			<ul>
-  				<li>
-  					<a class="item-link item-content">
-  						<div class="item-inner">
-  							<div class="item-title-row">
-  								<div class="item-title">Tanggal</div>
-  								<div class="item-after inv-amount">Jam in : 07.00</div>
-  							</div>
-  							<div class="item-subtitle"><span class="inv-client">8 Aug 2017</span> <span class="inv-status">Jam out : 16.30</span></div>
-  						</div>
-  					</a>
-  				</li>
-          <li>
-            <a class="item-link item-content">
-              <div class="item-inner">
-                <div class="item-title-row">
-                  <div class="item-title">Tanggal</div>
-                  <div class="item-after inv-amount">Jam in : 07.00</div>
-                </div>
-                <div class="item-subtitle"><span class="inv-client">8 Aug 2017</span> <span class="inv-status">Jam out : 16.30</span></div>
-              </div>
-            </a>
-          </li>
-          <li>
-            <a class="item-link item-content">
-              <div class="item-inner">
-                <div class="item-title-row">
-                  <div class="item-title">Tanggal</div>
-                  <div class="item-after inv-amount">Jam in : 07.00</div>
-                </div>
-                <div class="item-subtitle"><span class="inv-client">8 Aug 2017</span> <span class="inv-status">Jam out : 16.30</span></div>
-              </div>
-            </a>
-          </li>
+  			<ul id="list">
+
         </ul>
       </div>
   </div>
