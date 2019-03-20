@@ -91,7 +91,6 @@ var routes = [
       },
       pageAfterIn: function(event, page) {
 
-        $("#waktu").html('<option value="2018-12">Desember 2018</option><option value="2019-01">Januari 2019</option>');
       },
       pageInit: function(event, page) {
         console.log("index in");
