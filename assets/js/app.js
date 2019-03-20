@@ -228,9 +228,15 @@ function logout(){
 
 function cari_us(){
 	app.preloader.show();
-	var tanggal_us = $('#waktu').val();
-	var session = JSON.parse(localStorage.getItem("session"));
-	var nomor_register = session.nomor_register;
+ var tanggal_us = $('#waktu').val();
+ console.log(tanggal_us);
+ var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+ var date = tanggal_us.split("-");
+ var tahun = date[0];
+ var bulan = date[1];
+ $('.keterangan-uk').html("Uang saku dan Uang Makan "+months[bulan-1]+" "+tahun);
+ var session = JSON.parse(localStorage.getItem("session"));
+ var nomor_register = session.nomor_register;
 	var datas = new FormData();
 	datas.append("nomor_register", nomor_register);
 	datas.append("bulan_tahun", tanggal_us);
