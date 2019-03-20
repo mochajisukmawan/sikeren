@@ -256,4 +256,27 @@ function logout(){
 
 function cari_us(){
 
+ var tanggal_us = $('#waktu').val();
+
+	var datas = new FormData();
+	datas.append("nomor_register", "1");
+	datas.append("bulan_tahun", tanggal_us);
+	$.ajax({
+		 type: "POST",
+		 url: "http://10.64.5.40/sikeren/api/uang_saku",
+		 data: datas,
+		 processData: false,
+		 contentType: false,
+		 success: function(data) {
+			 console.log(data);
+			 $('.us').html("Rp "+data.uang_saku);
+			 $('.tp').html("Rp "+data.t_penampilan);
+			 $('.tbks').html("Rp "+data.t_bpjs_kes);
+			 $('.tbkn').html("Rp "+data.t_bpjs_ktn);
+			 $('.um').html("Rp "+data.uang_makan);
+			 $('.thp').html("Rp "+data.take_home_pay);
+		 },
+		 error: function(data) {
+		 }
+	 });
 }
