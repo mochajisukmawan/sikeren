@@ -285,9 +285,12 @@ function cari_kehadiran(){
    						<div class="item-inner">
    							<div class="item-title-row">
    								<div class="item-title">Tanggal</div>
-   								<div class="item-after inv-amount"">`+kehadiran[i].jam_in+`</div>
+   								<div class="item-after inv-amount"">Jam in : `+kehadiran[i].jam_in+`</div>
    							</div>
-   							<div class="item-subtitle"><span class="inv-amount">`+kehadiran[i].tanggal+`</span> <span class="inv-status" id="jam_out">`+kehadiran[i].jam_out+`</span></div>
+								<div class="item-title-row">
+									<div class="item-title">`+kehadiran[i].tanggal+`</div>
+									<div class="item-after inv-amount"">Jam out : `+kehadiran[i].jam_out+`</div>
+								</div>
    						</div>
    					</a>
    				 </li>
