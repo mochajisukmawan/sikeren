@@ -272,7 +272,6 @@ var routes = [
                     }
                   }
               }
-
              },
              error: function(data) {
              }
@@ -286,6 +285,10 @@ var routes = [
 {
   path: '/pertanyaan-1/',
   url: './pagesikeren/absen/pertanyaan-1.html',
+},
+{
+  path: '/informasi/',
+  url: './pagesikeren/informasi/informasi.html',
 }
 
 
