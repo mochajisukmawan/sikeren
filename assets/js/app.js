@@ -304,5 +304,11 @@ function cari_kehadiran(){
 	 });
 }
 function abs_pagi(){
-	app.router.navigate('/pertanyaan-1/');
+	if($('#kode').val()){
+		app.router.navigate('/pertanyaan-1/');
+	}else {
+		console.log('asdf');
+		$('#kode').prop('required',true);
+		
+	}
 }
