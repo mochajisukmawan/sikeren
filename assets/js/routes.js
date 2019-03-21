@@ -235,16 +235,22 @@ var routes = [
              processData: false,
              contentType: false,
              success: function(data) {
-               // $("#waktu").append('<option value="" hidden>Tanggal</option>');
-               console.log(data);
-                // var periode = data.periode;
-                // console.log(periode);
-                // for(var i in periode){
-                //   var date = periode[i].periode.split("-");
-                //   var tahun = date[0];
-                //   var bulan = date[1]
-                //   $("#waktu").append('<option value="'+periode[i].periode+'">'+months[bulan-1]+" "+tahun+'</option>');
-                // }
+
+               for(var i in data){
+               $('.budaya-cont').append(`
+                                       <div class="card card-outline">
+                                         <div class="card-header">`+data[i].std_layanan+`</div>
+                                         <div class="card-content card-content-padding `+data[i].id_std_layanan+`">
+                                         </div>
+                                         <div class="card-footer"><h3>Bobot : `+data[i].bobot+`</h3></div>
+                                       </div>
+                                      `);
+                  var detail_layanan = data[i].detail_layanan;
+                  for(var j in detail_layanan){
+                    var no = Number(j) + 1;
+                    $('.'+data[i].id_std_layanan+'').append('<p>'+no+' '+detail_layanan[j].std_layanan_detail+'</p>');
+                  }
+              }
 
              },
              error: function(data) {
