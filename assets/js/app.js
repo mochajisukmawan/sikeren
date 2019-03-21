@@ -263,6 +263,12 @@ function cari_kehadiran(){
 	$("#list").html("");
 	app.preloader.show();
 	var tanggal_us = $('#waktu').val();
+	var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+	var date = tanggal_us.split("-");
+	var tahun = date[0];
+	var bulan = date[1];
+	$('.keterangan-kehadiran').html("Uang saku dan Uang Makan "+months[bulan-1]+" "+tahun);
+
 	var session = JSON.parse(localStorage.getItem("session"));
 	var nomor_register = session.nomor_register;
 	var datas = new FormData();
@@ -279,15 +285,30 @@ function cari_kehadiran(){
 			 console.log(data);
 			 var kehadiran=data.kehadiran;
 			 for(var i in kehadiran){
+			 	var date = kehadiran[i].tanggal.split("-");
+			 	var tahun = date[0];
+				var bulan = date[1];
+			 	var tanggal = date[2];
 				 $("#list").append(`
 					 <li>
    					<a class="item-link item-content">
    						<div class="item-inner">
    							<div class="item-title-row">
    								<div class="item-title">Tanggal</div>
-   								<div class="item-after inv-amount"">`+kehadiran[i].jam_in+`</div>
+   								<div class="item-after inv-amount"">`+tanggal+` `+months[bulan-1]+` `+tahun+`</div>
    							</div>
-   							<div class="item-subtitle"><span class="inv-amount">`+kehadiran[i].tanggal+`</span> <span class="inv-status" id="jam_out">`+kehadiran[i].jam_out+`</span></div>
+								<div class="item-title-row">
+									<div class="item-title">Jam In </div>
+									<div class="item-after inv-amount"">`+kehadiran[i].jam_in+`</div>
+								</div>
+								<div class="item-title-row">
+									<div class="item-title">Jam Out</div>
+									<div class="item-after inv-amount"">`+kehadiran[i].jam_out+`</div>
+								</div>
+								<div class="item-title-row">
+									<div class="item-title">Approve</div>
+									<div class="item-after inv-amount"">`+kehadiran[i].approve+`</div>
+								</div>
    						</div>
    					</a>
    				 </li>

@@ -235,16 +235,43 @@ var routes = [
              processData: false,
              contentType: false,
              success: function(data) {
-               // $("#waktu").append('<option value="" hidden>Tanggal</option>');
                console.log(data);
-                // var periode = data.periode;
-                // console.log(periode);
-                // for(var i in periode){
-                //   var date = periode[i].periode.split("-");
-                //   var tahun = date[0];
-                //   var bulan = date[1]
-                //   $("#waktu").append('<option value="'+periode[i].periode+'">'+months[bulan-1]+" "+tahun+'</option>');
-                // }
+               for(var i in data){
+               $('.budaya-cont').append(`
+                                       <div class="card card-outline">
+                                         <div class="card-header">`+data[i].std_layanan+`</div>
+                                         <div class="card-content card-content-padding">
+                                         <div class="list accordion-list">
+                                           <ul class="`+data[i].id_std_layanan+`">
+
+                                           </ul>
+                                         </div>
+                                         </div>
+                                         <div class="card-footer"><h3>Bobot : `+data[i].bobot+`</h3></div>
+                                       </div>
+                                      `);
+                  var detail_layanan = data[i].detail_layanan;
+                  for(var j in detail_layanan){
+                    var no = Number(j) + 1;
+                    $('.'+data[i].id_std_layanan+'').append(`
+                      <li class="accordion-item"><a href="#" class="item-content item-link">
+                          <div class="item-inner">
+                            <div class="item-title"><h5>`+no+`. `+detail_layanan[j].std_layanan_detail+`</h5></div>
+                          </div></a>
+                        <div class="accordion-item-content">
+                          <div class="block   detail_layanan_sekali_`+detail_layanan[j].id_std_layanan_detail+`">
+                          </div>
+                        </div>
+                      </li>
+
+                      `);
+                    var detail_layanan_sekali = detail_layanan[j].detail_layanan_sekali;
+                    for(var k in detail_layanan_sekali){
+                      var no_lay = Number(k) + 1;
+                      $('.detail_layanan_sekali_'+detail_layanan[j].id_std_layanan_detail+'').append('<p>'+no_lay+'. '+detail_layanan_sekali[k].std_layanan_detail_sekali+'</p>');
+                    }
+                  }
+              }
 
              },
              error: function(data) {
