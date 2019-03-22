@@ -325,15 +325,5 @@ function cari_kehadiran(){
 	 });
 }
 function abs_pagi(){
-	if($('#kode').val()){
 		app.router.navigate('/pertanyaan-1/');
-	}else {
-		// console.log('asdf');
-		$('#kode').prop('required',true);
-		$('#error').html('<p style="margin-top:-10px" id="psn">* Masukan Kode</p>');
-    $('#psn').css('color','red');
-		setTimeout(function(){
-		  $('#psn').remove();
-		}, 1800);
-	}
 }
