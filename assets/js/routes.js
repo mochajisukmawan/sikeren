@@ -136,7 +136,7 @@ var routes = [
                   var date = periode[i].periode.split("-");
                   var tahun = date[0];
                   var bulan = date[1]
-                  $("#waktu").append('<option value="'+periode[i].periode+'">'+months[bulan-1]+" "+tahun+'</option>');
+                  $("#waktu_us").append('<option value="'+periode[i].periode+'">'+months[bulan-1]+" "+tahun+'</option>');
                 }
 
              },
@@ -186,7 +186,7 @@ var routes = [
                   var date = periode[i].periode.split("-");
                   var tahun = date[0];
                   var bulan = date[1]
-                  $("#waktu").append('<option value="'+periode[i].periode+'">'+months[bulan-1]+" "+tahun+'</option>');
+                  $("#waktu_kehadiran").append('<option value="'+periode[i].periode+'">'+months[bulan-1]+" "+tahun+'</option>');
                 }
 
              },
