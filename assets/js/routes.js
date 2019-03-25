@@ -289,6 +289,26 @@ var routes = [
 {
   path: '/informasi/',
   url: './pagesikeren/informasi/informasi.html',
+},{
+  path: '/perjanjian/',
+  url: './pagesikeren/perjanjian/perjanjian.html',
+  on: {
+      pageBeforeIn: function(event, page) {
+        console.log("index before in");
+      },
+      pageAfterIn: function(event, page) {
+        console.log("index after in");
+      },
+      pageInit: function(event, page) {
+        var no_registrasi = new FormData();
+        var session = JSON.parse(localStorage.getItem("session"));
+        var kode_register = session.kode_register;
+        $('#pdf_perjanjian').attr('src','http://10.64.5.40/sikeren/api/preview_file/'+kode_register+'');
+      },
+      pageBeforeRemove: function(event, page) {
+        console.log("index before leave");
+      },
+  }
 }
 
 
