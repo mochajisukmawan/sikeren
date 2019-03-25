@@ -6,7 +6,7 @@ Version:1.0
 
 /*============================
  [Table of CSS]
- 
+
  	1. Material Icons Font
 	2. Framework7 Icons Font
 	3. Basic CSS
@@ -34,7 +34,7 @@ Version:1.0
 	25. Settings
 	26. Email Settings
 	27. Invoice Settings
-	
+
 ========================================*/
 
 /*-----------------
@@ -227,7 +227,7 @@ input[disabled], input[readonly] {background-color: #eee;}
 .dash-widget {background: #fff;border: 1px solid #e7e7e7;box-shadow: 0 1px 0 rgba(0, 0, 0, 0.25);border-radius:4px;margin-bottom: 15px;overflow: hidden;padding: 10px;text-align:center;}
 .dash-widget-icon i {background-color: #3a57c4;border: 1px solid #3a57c4;border-radius: 50%;color: #fff;font-size: 24px;height: 50px;line-height: 48px;text-align: center;width: 50px;}
 .dash-widget-info {margin-top: 13px;}
-.dash-widget-info h4 {color: #333 !important;font-size: 18px;margin: 0;}
+.dash-widget-info h4 {color: #333 !important;font-size: 14px;margin-bottom: 5px;}
 .dash-widget-info p {color: #333;font-size: 11px;margin: 0; font-weight: bold}
 .chart-box {background: #fff;border:1px solid #e7e7e7;border-radius: 4px;box-shadow: 0 1px 0 rgba(0, 0, 0, 0.25);margin-bottom: 15px;overflow: hidden;padding: 15px;text-align: center;}
 
@@ -273,7 +273,7 @@ input[disabled], input[readonly] {background-color: #eee;}
 .walkthrough .swiper-pagination {bottom: 80px;}
 .ios .button.button-fill, .ios .button.button-fill-ios {background: #3a57c4;}
 .ios .swiper-pagination-bullet-active {background: #3a57c4;}
- 
+
 /*-----------------
 	9. Leave
 -----------------------*/
