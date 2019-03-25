@@ -228,8 +228,7 @@ function logout(){
 
 function cari_us(){
 	app.preloader.show();
- var tanggal_us = $('#waktu').val();
- console.log(tanggal_us);
+ var tanggal_us = $('#waktu_us').val();
  var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
  var date = tanggal_us.split("-");
  var tahun = date[0];
@@ -260,14 +259,14 @@ function cari_us(){
 	 });
 }
 function cari_kehadiran(){
-	$("#list").html("");
 	app.preloader.show();
-	var tanggal_us = $('#waktu').val();
+	$("#list").html("");
+	var tanggal_us = $('#waktu_kehadiran').val();
 	var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 	var date = tanggal_us.split("-");
 	var tahun = date[0];
 	var bulan = date[1];
-	$('.keterangan-kehadiran').html("Uang saku dan Uang Makan "+months[bulan-1]+" "+tahun);
+	$('.keterangan-kehadiran').html("Daftar Kehadiran Bulan "+months[bulan-1]+" "+tahun);
 
 	var session = JSON.parse(localStorage.getItem("session"));
 	var nomor_register = session.nomor_register;
@@ -281,7 +280,6 @@ function cari_kehadiran(){
 		 processData: false,
 		 contentType: false,
 		 success: function(data) {
-			 app.preloader.hide();
 			 console.log(data);
 			 var kehadiran=data.kehadiran;
 			 for(var i in kehadiran){
@@ -318,7 +316,7 @@ function cari_kehadiran(){
 				 // $('#jam_in').html("Jam In "+data.jam_in);
 				 // $('#jam_out').html("Jam Out "+data.jam_out);
 			 }
-
+			 app.preloader.hide();
 		 },
 		 error: function(data) {
 		 }
