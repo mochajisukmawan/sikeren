@@ -46,6 +46,18 @@ var app  = new Framework7({
 	}
 });
 
+var sudahabsenpagi = app.toast.create({
+  text: 'Anda sudah melakukan presensi pagi.',
+  position: 'center',
+  closeTimeout: 2000,
+});
+
+var sudahabsensore = app.toast.create({
+  text: 'Anda sudah melakukan presensi sore.',
+  position: 'center',
+  closeTimeout: 2000,
+});
+
 // Sidebar
 
 ! function($) {
@@ -322,6 +334,40 @@ function cari_kehadiran(){
 		 }
 	 });
 }
-function abs_pagi(){
-		app.router.navigate('/pertanyaan-1/');
-}
+var data_pertanyaan;
+function cek_absen(jenis_absen){
+	var session = JSON.parse(localStorage.getItem("session"));
+	var nomor_register = session.nomor_register;
+	var date_now = new Date().toISOString().slice(0,10);
+	 var datas = new FormData();
+	 datas.append("tanggal", date_now);
+	 datas.append("nomor_register", nomor_register);
+	 $.ajax({
+			type: "POST",
+			url: "http://10.64.5.40/sikeren/api/"+jenis_absen+"",
+			data: datas,
+			processData: false,
+			contentType: false,
+			success: function(data) {
+				data_pertanyaan = data.data;
+
+					if(data.error == true){
+						if(jenis_absen == 'absenPagi'){
+							sudahabsenpagi.open();
+						}else{
+							sudahabsensore.open();
+						}
+					}else{
+						if(jenis_absen == 'absenPagi'){
+							app.router.navigate('/absen-pagi/');
+						}else{
+							app.router.navigate('/absen-sore/');
+						}
+
+					}
+			},
+			error: function(data) {
+			}
+		});
+
+};

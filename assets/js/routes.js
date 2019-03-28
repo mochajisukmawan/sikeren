@@ -66,6 +66,39 @@ var routes = [
         var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
         var days = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
         $("#kethari").html(days[d.getDay()]+", "+d.getDate()+" "+months[d.getMonth()]+" "+d.getFullYear()+" Pukul : "+d.getHours()+":"+d.getMinutes());
+         var vidw=parseInt($('#video').width());
+         $('.absenpagi').on('click',function(){
+          var dynamicPopup = app.popup.create({
+            content:   '<div class="popup" data-name="persiapan_absenpagi">'+
+                          '<div class="navbar" style="background-color: #3a57c4">'+
+                            '<div class="navbar-inner sliding" style="background-color: #3a57c4;">'+
+                              '<div class="right"><a href="#" class="link popup-close"><i class="icon material-icons">cancel</i></a></div>'+
+                              '<div class="title">Foto Absensi Pagi</div>'+
+                            '</div>'+
+                          '</div>'+
+                          '<div style="padding:10px;"><canvas id="canvas" width="'+vidw+'" height="385"></canvas></div>'+
+                            '<div class="account-form row justify-content-center">'+
+                               '<button type="button" id="presensifoto" class="col-50 button account-btn">Presensi Pagi</button>'+
+                            '</div>'+
+                        '</div>',
+            // Events
+            on: {
+              open: function (popup) {
+              },
+              opened: function (popup) {
+                try{
+                  var context = document.getElementById('canvas').getContext('2d');
+                  var video = document.getElementById('video');
+                  context.drawImage(video, 0,0,vidw,385);
+                  var dataurlimage=document.getElementById('canvas').toDataURL("image/png");
+                }catch(e){
+                  console.log('We have encountered an error: ' + e);
+                }
+              },
+            }
+          });
+          dynamicPopup.open();
+        });
       },
       pageInit: function(event, page) {
         console.log("index in");
