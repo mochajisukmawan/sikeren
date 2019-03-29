@@ -45,6 +45,17 @@ var app  = new Framework7({
 		},
 	}
 });
+var isi_semua = app.toast.create({
+  text: 'Isi Semua Pertanyaan.',
+  position: 'top',
+  closeTimeout: 2000,
+});
+
+var absen_pagi_berhasil = app.toast.create({
+  text: 'Absen Pagi Berhasil',
+  position: 'center',
+  closeTimeout: 2000,
+});
 
 var sudahabsenpagi = app.toast.create({
   text: 'Anda sudah melakukan presensi pagi.',
