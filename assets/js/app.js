@@ -305,19 +305,19 @@ function cari_kehadiran(){
    						<div class="item-inner">
    							<div class="item-title-row">
    								<div class="item-title">Tanggal</div>
-   								<div class="item-after inv-amount"">`+tanggal+` `+months[bulan-1]+` `+tahun+`</div>
+   								<div class="inv-status"">`+tanggal+` `+months[bulan-1]+` `+tahun+`</div>
    							</div>
 								<div class="item-title-row">
 									<div class="item-title">Jam In </div>
-									<div class="item-after inv-amount"">`+kehadiran[i].jam_in+`</div>
+									<div class="inv-status"">`+kehadiran[i].jam_in+`</div>
 								</div>
 								<div class="item-title-row">
 									<div class="item-title">Jam Out</div>
-									<div class="item-after inv-amount"">`+kehadiran[i].jam_out+`</div>
+									<div class="inv-status"">`+kehadiran[i].jam_out+`</div>
 								</div>
 								<div class="item-title-row">
 									<div class="item-title">Approve</div>
-									<div class="item-after inv-amount"">`+kehadiran[i].approve+`</div>
+									<div class="inv-status"">`+kehadiran[i].approve+`</div>
 								</div>
    						</div>
    					</a>

@@ -577,7 +577,7 @@ input[disabled], input[readonly] {background-color: #eee;}
 	20. Invoices
 -----------------------*/
 
-.inv-status {float:right;}
+.inv-status {float:right; color: #000;}
 .inv-client {float: left;font-size: 12px;}
 .ios .media-list.inv-list .item-link .item-title-row {padding:0;background:transparent;}
 .inv-amount {color: #000 !important;font-size: 14px;font-weight: bold;}

@@ -15,7 +15,7 @@ var routes = [
           app.router.navigate('/login/');
         });
         var session = JSON.parse(localStorage.getItem("session"));
-        $("#nama").append(session.nama_panggilan);
+        $("#nama").html(session.nama_panggilan);
       },
       pageBeforeRemove: function(event, page) {
         console.log("index before leave");
