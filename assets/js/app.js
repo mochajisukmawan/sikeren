@@ -381,4 +381,7 @@ function cek_absen(jenis_absen){
 			}
 		});
 
-};
+}
+function setbackmenu(){
+	app.router.navigate('/');
+}

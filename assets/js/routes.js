@@ -119,7 +119,6 @@ var routes = [
           datas.append(data_pertanyaan[k].id_quisioner , value);
         }
         if(validasi == 0){
-
           $.ajax({
              type: "POST",
              url: "http://10.64.5.40/sikeren/api/simpanAbsenPagi",
@@ -130,6 +129,11 @@ var routes = [
                 app.preloader.hide();
                 absen_pagi_berhasil.open();
                 apps.router.navigate('/menu-absen/');
+                $('.my-popup').attr("class","popup my-popup");
+                $('.my-popup').remove();
+                $('.popup-backdrop').attr('class', 'popup-backdrop');
+                //$('.back').attr('onClick', "setbackmenu()");
+
              },
              error: function(data) {
               app.preloader.hide();
@@ -142,7 +146,6 @@ var routes = [
        }
 
       });
-
 
       },
       pageInit: function(event, page) {
