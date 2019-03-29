@@ -15,7 +15,7 @@ var routes = [
           app.router.navigate('/login/');
         });
         var session = JSON.parse(localStorage.getItem("session"));
-        $("#nama").append(session.nama_panggilan);
+        $("#nama").html(session.nama_panggilan);
       },
       pageBeforeRemove: function(event, page) {
         console.log("index before leave");
@@ -62,43 +62,88 @@ var routes = [
         console.log("index before in");
       },
       pageAfterIn: function(event, page) {
+        var apps = page.app;
+        var dataurlimage;
         var d = new Date();
         var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
         var days = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
         $("#kethari").html(days[d.getDay()]+", "+d.getDate()+" "+months[d.getMonth()]+" "+d.getFullYear()+" Pukul : "+d.getHours()+":"+d.getMinutes());
          var vidw=parseInt($('#video').width());
          $('.absenpagi').on('click',function(){
-          var dynamicPopup = app.popup.create({
-            content:   '<div class="popup" data-name="persiapan_absenpagi">'+
-                          '<div class="navbar" style="background-color: #3a57c4">'+
-                            '<div class="navbar-inner sliding" style="background-color: #3a57c4;">'+
-                              '<div class="right"><a href="#" class="link popup-close"><i class="icon material-icons">cancel</i></a></div>'+
-                              '<div class="title">Foto Absensi Pagi</div>'+
-                            '</div>'+
-                          '</div>'+
-                          '<div style="padding:10px;"><canvas id="canvas" width="'+vidw+'" height="385"></canvas></div>'+
-                            '<div class="account-form row justify-content-center">'+
-                               '<button type="button" id="presensifoto" class="col-50 button account-btn">Presensi Pagi</button>'+
-                            '</div>'+
-                        '</div>',
-            // Events
-            on: {
-              open: function (popup) {
-              },
-              opened: function (popup) {
-                try{
-                  var context = document.getElementById('canvas').getContext('2d');
-                  var video = document.getElementById('video');
-                  context.drawImage(video, 0,0,vidw,385);
-                  var dataurlimage=document.getElementById('canvas').toDataURL("image/png");
-                }catch(e){
-                  console.log('We have encountered an error: ' + e);
-                }
-              },
+           $('#div_canvas').html('<canvas id="canvas" width="'+vidw+'" height="385"></canvas>');
+            try{
+              var context = document.getElementById('canvas').getContext('2d');
+              var video = document.getElementById('video');
+              context.drawImage(video, 0,0,vidw,385);
+              dataurlimage=document.getElementById('canvas').toDataURL("image/png");
+            }catch(e){
+              console.log('We have encountered an error: ' + e);
             }
-          });
-          dynamicPopup.open();
         });
+        console.log(data_pertanyaan);
+        for(var i in data_pertanyaan){
+          $('.div_pertanyaan').append(`
+                  <div class="row">
+        						<div class="col-100 tablet-100">
+        							<div class="card no-margin justify-content-center">
+        							  <div class="card-content card-content-padding">
+        									<p class="block-strong no-margin-bottom">`+data_pertanyaan[i].quisioner+`</p>
+        									 <p class="no-margin-top text-align-center block-strong">
+        										<label class="radio">
+        											<input type="radio" value="`+data_pertanyaan[i].jawaban_ya+`" name="quisioner_`+data_pertanyaan[i].id_quisioner+`"><i class="icon-radio"></i>
+        										</label> <b>`+data_pertanyaan[i].jawaban_ya+`</b>
+        										&nbsp;&nbsp;
+        										<label class="radio margin-left">
+        											<input type="radio" value="`+data_pertanyaan[i].jawaban_tidak+`" name="quisioner_`+data_pertanyaan[i].id_quisioner+`"><i class="icon-radio"></i>
+        										</label> <b>`+data_pertanyaan[i].jawaban_tidak+`</b>
+        									</p>
+        								</div>
+        							</div>
+        						</div>
+        					</div>`);
+
+      }
+      $('.presensi_pagi').on('click',function(){
+        app.preloader.show();
+        var session = JSON.parse(localStorage.getItem("session"));
+        var nomor_register = session.nomor_register;
+        var validasi = 0;
+       	var datas = new FormData();
+        datas.append("nomor_register", nomor_register);
+        datas.append("selfie_pagi", dataurlimage);
+        for(var k in data_pertanyaan){
+          var value = $('input[name="quisioner_'+data_pertanyaan[k].id_quisioner+'"]:checked').val();
+          if(value == null){
+            validasi++;
+          }
+          datas.append(data_pertanyaan[k].id_quisioner , value);
+        }
+        if(validasi == 0){
+
+          $.ajax({
+             type: "POST",
+             url: "http://10.64.5.40/sikeren/api/simpanAbsenPagi",
+             data: datas,
+             processData: false,
+             contentType: false,
+             success: function(data) {
+                app.preloader.hide();
+                absen_pagi_berhasil.open();
+                apps.router.navigate('/menu-absen/');
+             },
+             error: function(data) {
+              app.preloader.hide();
+              absen_pagi_gagal.open();
+             }
+           });
+       }else{
+         app.preloader.hide();
+         isi_semua.open();
+       }
+
+      });
+
+
       },
       pageInit: function(event, page) {
         console.log("index in");
