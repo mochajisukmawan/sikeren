@@ -1,6 +1,36 @@
 <!DOCTYPE html>
 <html>
 
+<style>
+.demo-swiper .swiper-slide {
+  font-size: 25px;
+  font-weight: 300;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #fff;
+  color: #000;
+}
+.demo-swiper .swiper-slide {
+  box-sizing: border-box;
+  border: 1px solid #ddd;
+  background: #fff;
+}
+.demo-swiper {
+  font-size: 18px;
+
+}
+.demo-swiper.demo-swiper-auto .swiper-slide {
+  width: 85%;
+}
+.demo-swiper.demo-swiper-auto .swiper-slide:nth-child(2n) {
+  width: 70%;
+}
+.demo-swiper.demo-swiper-auto .swiper-slide:nth-child(3n) {
+  width: 30%;
+}
+</style>
+
 <!-- Mirrored from dreamguys.co.in/dhr/template/index.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 16 Aug 2018 01:13:12 GMT -->
 <head>
     <meta charset="utf-8">
@@ -144,12 +174,25 @@
                 <div class="page-content">
                     <div class="block">
                         <div class="dashboard-area">
+
                             <!-- sampul -->
                             <div class="row">
                                 <div class="col-100">
-                                    <div class="dash-widget">
-                                        <img src="assets/img/sikeren.jpg" alt="">
+                                  <div data-pagination='{"el": ".swiper-pagination"}' data-space-between="50" class="swiper-container swiper-init demo-swiper">
+                                    <div class="swiper-pagination"></div>
+                                    <div class="swiper-wrapper">
+                                      <div class="swiper-slide"><img src="assets/img/sikeren.jpg" alt=""></div>
+                                      <div class="swiper-slide">Slide 2</div>
+                                      <div class="swiper-slide">Slide 3</div>
+                                      <div class="swiper-slide">Slide 4</div>
+                                      <div class="swiper-slide">Slide 5</div>
+                                      <div class="swiper-slide">Slide 6</div>
+                                      <div class="swiper-slide">Slide 7</div>
+                                      <div class="swiper-slide">Slide 8</div>
+                                      <div class="swiper-slide">Slide 9</div>
+                                      <div class="swiper-slide">Slide 10</div>
                                     </div>
+                                  </div>
                                 </div>
                             </div>
                             <!-- menu -->
