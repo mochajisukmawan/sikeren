@@ -366,10 +366,11 @@ function cek_absen(jenis_absen){
 			contentType: false,
 			success: function(data) {
 				data_pertanyaan = data.data;
-
 					if(data.error == true){
 						if(jenis_absen == 'absenPagi'){
 							sudahabsenpagi.open();
+							localStorage.setItem("coderating", data.coderating);
+							app.router.navigate('/ratting/');
 						}else{
 							sudahabsensore.open();
 						}

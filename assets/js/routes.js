@@ -129,6 +129,7 @@ var routes = [
                 app.preloader.hide();
                 absen_pagi_berhasil.open();
                 $('.page-previous').remove();
+                localStorage.setItem("coderating", data.coderating);
                 apps.router.navigate('/menu-absen/');
                 $('.my-popup').attr("class","popup my-popup");
                 $('.my-popup').remove();
@@ -487,6 +488,27 @@ on: {
 
 
 
+    },
+    pageBeforeRemove: function(event, page) {
+      console.log("index before leave");
+    },
+}
+},
+{
+path: '/ratting/',
+url: './pagesikeren/absen/ratting.html',
+on: {
+    pageBeforeIn: function(event, page) {
+      console.log("index before in");
+    },
+    pageAfterIn: function(event, page) {
+      //app.preloader.show();
+      // cari_kehadiran();
+    },
+    pageInit: function(event, page) {
+      var coderatting = localStorage.getItem("coderating");
+      console.log(coderatting);
+      $('#barcode').attr('src','https://chart.googleapis.com/chart?cht=qr&chl=https://eoffice.bankjateng.co.id/html/rating/masuk/'+coderatting+'&chs=200x200&chld=H|3');
     },
     pageBeforeRemove: function(event, page) {
       console.log("index before leave");
