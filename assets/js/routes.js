@@ -221,7 +221,7 @@ var routes = [
                   var date = periode[i].periode.split("-");
                   var tahun = date[0];
                   var bulan = date[1]
-                  $("#waktu_us").append('<option onClick="cari_us()" value="'+periode[i].periode+'">'+months[bulan-1]+" "+tahun+'</option>');
+                  $("#waktu_us").append('<option value="'+periode[i].periode+'">'+months[bulan-1]+" "+tahun+'</option>');
                 }
              },
              error: function(data) {
