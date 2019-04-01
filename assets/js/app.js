@@ -370,7 +370,7 @@ function cek_absen(jenis_absen){
 						}
 					}else{
 						if(jenis_absen == 'absenPagi'){
-							app.router.navigate('/absen-pagi/');
+							app.router.navigate('/absen-budaya/');
 						}else{
 							app.router.navigate('/absen-sore/');
 						}
