@@ -371,12 +371,14 @@ function cek_absen(jenis_absen){
 							localStorage.setItem("coderating", data.coderating);
 							app.router.navigate('/ratting/');
 						}else{
-							sudahabsensore.open();
+							ceksore("asdhjf");
+							//sudahabsensore.open();
 						}
 					}else{
 						if(jenis_absen == 'absenPagi'){
 							app.router.navigate('/absen-budaya/');
 						}else{
+
 							app.router.navigate('/absen-sore/');
 						}
 
@@ -386,4 +388,13 @@ function cek_absen(jenis_absen){
 			}
 		});
 
+}
+function ceksore(hh){
+	// var hh = "safdbjk";
+	var cek = app.toast.create({
+		text: hh,
+		position: 'center',
+		closeTimeout: 2000,
+	});
+	cek.open();
 }
