@@ -371,8 +371,7 @@ function cek_absen(jenis_absen){
 							localStorage.setItem("coderating", data.coderating);
 							app.router.navigate('/ratting/');
 						}else{
-							ceksore("asdhjf");
-							//sudahabsensore.open();
+							pesan(data.error_confirm);
 						}
 					}else{
 						if(jenis_absen == 'absenPagi'){
@@ -389,8 +388,7 @@ function cek_absen(jenis_absen){
 		});
 
 }
-function ceksore(hh){
-	// var hh = "safdbjk";
+function pesan(hh){
 	var cek = app.toast.create({
 		text: hh,
 		position: 'center',
