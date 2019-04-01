@@ -316,25 +316,30 @@ function cari_kehadiran(){
    						<div class="item-inner">
    							<div class="item-title-row">
    								<div class="item-title">Tanggal</div>
-   								<div class="inv-status"">`+tanggal+` `+months[bulan-1]+` `+tahun+`</div>
+   								<div class="inv-status">`+tanggal+` `+months[bulan-1]+` `+tahun+`</div>
    							</div>
 								<div class="item-title-row">
 									<div class="item-title">Jam In </div>
-									<div class="inv-status"">`+kehadiran[i].jam_in+`</div>
+									<div class="inv-status">`+kehadiran[i].jam_in+`</div>
 								</div>
 								<div class="item-title-row">
 									<div class="item-title">Jam Out</div>
-									<div class="inv-status"">`+kehadiran[i].jam_out+`</div>
+									<div class="inv-status">`+kehadiran[i].jam_out+`</div>
 								</div>
 								<div class="item-title-row">
 									<div class="item-title">Approve</div>
-									<div class="inv-status"">`+kehadiran[i].approve+`</div>
+									<div id="cek_`+i+`" class="inv-status">`+kehadiran[i].approve+`</div>
 								</div>
    						</div>
    					</a>
    				 </li>
 
 					 `);
+					 if(kehadiran[i].approve!="Approved"){
+						 $("#cek_"+i).css('color', 'red');
+					 }else {
+					 	$("#cek_"+i).css('color', 'green');
+					 }
 				 // $('#tgl').html(""+data.tanggal);
 				 // $('#jam_in').html("Jam In "+data.jam_in);
 				 // $('#jam_out').html("Jam Out "+data.jam_out);
