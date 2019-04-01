@@ -398,3 +398,5 @@ function ceksore(hh){
 	});
 	cek.open();
 }
+
+// api kinerja harian http://10.64.5.40/sikeren/api/lastActivity
