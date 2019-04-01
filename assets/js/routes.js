@@ -364,8 +364,8 @@ var routes = [
   }
 },
 {
-  path: '/pertanyaan-1/',
-  url: './pagesikeren/absen/pertanyaan-1.html',
+  path: '/before-abs/',
+  url: './pagesikeren/absen/before-abs.html',
 },
 {
   path: '/informasi/',
