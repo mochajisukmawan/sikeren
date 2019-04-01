@@ -248,7 +248,6 @@ function logout(){
       verticalButtons: false,
   }).open();
 };
-
 function cari_us(){
 	app.preloader.show();
  var tanggal_us = $('#waktu_us').val();
@@ -366,16 +365,17 @@ function cek_absen(jenis_absen){
 			contentType: false,
 			success: function(data) {
 				data_pertanyaan = data.data;
-
 					if(data.error == true){
 						if(jenis_absen == 'absenPagi'){
 							sudahabsenpagi.open();
+							localStorage.setItem("coderating", data.coderating);
+							app.router.navigate('/ratting/');
 						}else{
 							sudahabsensore.open();
 						}
 					}else{
 						if(jenis_absen == 'absenPagi'){
-							app.router.navigate('/absen-pagi/');
+							app.router.navigate('/absen-budaya/');
 						}else{
 							app.router.navigate('/absen-sore/');
 						}
@@ -386,7 +386,4 @@ function cek_absen(jenis_absen){
 			}
 		});
 
-}
-function setbackmenu(){
-	app.router.navigate('/');
 }
