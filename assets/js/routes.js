@@ -262,7 +262,8 @@ var routes = [
                    success: function(data) {
                      app.preloader.hide();
                      $('.page-previous').remove();
-                     console.log(data);
+                     console.log(data.data.jam_in);
+                     localStorage.setItem("kinerja", JSON.stringify(data.data));
                      // localStorage.setItem("coderating", data.coderating);
                      apps.router.navigate('/kinerja-harian/');
                      $('.my-popup').attr("class","popup my-popup");
@@ -279,6 +280,8 @@ var routes = [
              }
 
             });
+
+
       },
       pageInit: function(event, page) {
         console.log("index in");
@@ -395,6 +398,28 @@ var routes = [
 {
   path: '/kinerja-harian/',
   url: './pagesikeren/kinerjaharian/kinerja-harian.html',
+  on: {
+    pageBeforeIn: function(event, page) {
+      console.log("index before in");
+    },
+    pageAfterIn: function(event, page) {
+      //app.preloader.show();
+      // cari_kehadiran();
+    },
+    pageInit: function(event, page) {
+      var d = new Date();
+      var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+      var days = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
+      $("#kethari").html(days[d.getDay()]+", "+d.getDate()+" "+months[d.getMonth()]+" "+d.getFullYear()+" Pukul : "+d.getHours()+":"+d.getMinutes());
+      var kinerja = JSON.parse(localStorage.getItem("kinerja"));
+      $("#jam_in").html(kinerja.jam_in);
+      $("#jam_out").html(kinerja.jam_out);
+    },
+    pageBeforeRemove: function(event, page) {
+      console.log("index before leave");
+    },
+
+  }
 },
 {
   path: '/budaya/',
