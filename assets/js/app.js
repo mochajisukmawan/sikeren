@@ -268,13 +268,14 @@ function cari_us(){
 		 processData: false,
 		 contentType: false,
 		 success: function(data) {
-			 app.preloader.hide();
+
 			 $('.us').html("Rp "+data.uang_saku);
 			 $('.tp').html("Rp "+data.t_penampilan);
 			 $('.tbks').html("Rp "+data.t_bpjs_kes);
 			 $('.tbkn').html("Rp "+data.t_bpjs_ktn);
 			 $('.um').html("Rp "+data.uang_makan);
 			 $('.thp').html("Rp "+data.take_home_pay);
+			 app.preloader.hide();
 		 },
 		 error: function(data) {
 		 }

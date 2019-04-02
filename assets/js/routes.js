@@ -301,9 +301,10 @@ var routes = [
         console.log("index before in");
       },
       pageAfterIn: function(event, page) {
-        app.preloader.show();
+
       },
       pageInit: function(event, page) {
+        app.preloader.show();
         var no_registrasi = new FormData();
         var session = JSON.parse(localStorage.getItem("session"));
         var nomor_register = session.nomor_register;
@@ -348,9 +349,10 @@ var routes = [
 
       },
       pageAfterIn: function(event, page) {
-          app.preloader.show();
+
       },
       pageInit: function(event, page) {
+        app.preloader.show();
         var no_registrasi = new FormData();
         var session = JSON.parse(localStorage.getItem("session"));
         var nomor_register = session.nomor_register;
