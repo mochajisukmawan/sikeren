@@ -262,8 +262,9 @@ var routes = [
                    success: function(data) {
                      app.preloader.hide();
                      $('.page-previous').remove();
+                     console.log(data);
                      // localStorage.setItem("coderating", data.coderating);
-                     apps.router.navigate('/ratting/');
+                     apps.router.navigate('/kinerja-harian/');
                      $('.my-popup').attr("class","popup my-popup");
                      $('.my-popup').remove();
                      $('.popup-backdrop').attr('class', 'popup-backdrop');
