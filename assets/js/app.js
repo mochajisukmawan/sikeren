@@ -350,6 +350,7 @@ function cari_kehadiran(){
 	 });
 }
 var data_pertanyaan;
+var data_pertanyaan_transaksi;
 function cek_absen(jenis_absen){
 	var session = JSON.parse(localStorage.getItem("session"));
 	var nomor_register = session.nomor_register;
@@ -364,7 +365,7 @@ function cek_absen(jenis_absen){
 			processData: false,
 			contentType: false,
 			success: function(data) {
-				data_pertanyaan = data.data;
+
 					if(data.error == true){
 						if(jenis_absen == 'absenPagi'){
 							sudahabsenpagi.open();
@@ -375,9 +376,12 @@ function cek_absen(jenis_absen){
 						}
 					}else{
 						if(jenis_absen == 'absenPagi'){
+							data_pertanyaan = data.data;
 							app.router.navigate('/absen-budaya/');
 						}else{
-
+							console.log(data);
+							data_pertanyaan = data.quisioner_sore;
+							data_pertanyaan_transaksi = data.quisioner_transaksi;
 							app.router.navigate('/absen-sore/');
 						}
 

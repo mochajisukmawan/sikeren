@@ -1,4 +1,5 @@
-<div class="page" data-name="meu-absen">
+
+<div class="page" data-name="absen-sore">
     <div class="navbar">
         <div class="navbar-inner">
             <div class="left">
@@ -9,29 +10,62 @@
             <div class="title">Absensi Sore</div>
         </div>
     </div>
-        <div class="page-content">
-            <div class="account-page">
-                <div class="account-inner">
-                    <div class="account">      
-                        <div class="account-content">
-                            <div class="account-title">
-                                <h4 id="kethari"></h4>
-                            </div>
-                            <p>Masukan Kode Absensi sore Hari ini</p>
-                            <div class="account-form">
-                                <form action="">
-                                    <div class="input-list">
-                                        <input type="text" placeholder="Kode">
-                                    </div>
-                                    <div class="input-list">
-                                    <button class="button button-big account-btn">Absensi Sore</button>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
+    <div class="page-content">
+      <div class="account-page">
+              <div class="account-inner">
+                  <div class="account">
+                      <div class="account-content">
+                          <div class="account-title">
+                              <h4 id="kethari"></h4>
+                          </div>
+                          <p style="margin-top:-15px;" class="text-align-center">Ambil Foto Selfie Untuk Absensi</p>
+                          <div class="account-form">
+      											<img id="video" height="385" crossorigin src="http://localhost/sikeren/assets/img/mrbean.jpg">
+      											<!-- <video id="video" playsinline style="width:100%;height:350px;" autoplay></video> -->
+                              <div class="input-list">
+      													<div class="row justify-content-center">
+                                    <button type="button" data-popup=".my-popup" class="popup-open absenpagi col-50 button account-btn">Take a Photo</button>
+      													</div>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      	</div>
+      	<div class="popup my-popup">
+        <div class="view">
+          <div class="page">
+            <div class="navbar">
+              <div class="navbar-inner">
+                <div class="title">Popup</div>
+                <div id="close" class="right">
+                  <!-- Link to close popup -->
+                  <a class="link popup-close">Close</a>
                 </div>
+              </div>
             </div>
+            <div class="page-content">
+      				<div class="block">
+      					<div id="div_canvas"></div>
+      				</div>
+      				<div class="block div_pertanyaan">
+
+      				</div>
+              <div class="block div_pertanyaan_transaksi">
+
+              </div>
+      				<div class="block">
+      					<div class="account-form margin-top">
+      						<div class="input-list">
+      							<button type="button" class="button account-btn presensi_sore">Presensi Sore</button>
+      						</div>
+      					</div>
+      				</div>
+
+            </div>
+          </div>
         </div>
+      </div>
     </div>
 </div>
-    
