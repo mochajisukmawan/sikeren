@@ -15,7 +15,9 @@ var routes = [
           app.router.navigate('/login/');
         });
         var session = JSON.parse(localStorage.getItem("session"));
-        $("#nama").html(session.nama_panggilan);
+        if(session != null){
+          $("#nama").html(session.nama_panggilan);
+        }
       },
       pageBeforeRemove: function(event, page) {
         console.log("index before leave");
@@ -31,7 +33,8 @@ var routes = [
   url: './pagesikeren/absen/menu-absen.html',
   async(routeTo, routeFrom, resolve, reject) {
     is_login(function(){
-      resolve({ url: 'pages/login.html' });
+      var app = page.app
+      app.router.navigate('/login/');
     });
   },
   on: {
@@ -127,7 +130,7 @@ var routes = [
              contentType: false,
              success: function(data) {
                 app.preloader.hide();
-                absen_pagi_berhasil.open();
+                pesan('Berhasil Absen Pagi');
                 $('.page-previous').remove();
                 // barcode
                 localStorage.setItem("coderating", data.coderating);
@@ -217,19 +220,39 @@ var routes = [
             $('.div_pertanyaan').append(`
                     <div class="row">
                       <div class="col-100 tablet-100">
-                        <div class="card no-margin justify-content-center">
+                        <div class="card no-margin">
                           <div class="card-content card-content-padding">
-                            <p class="block-strong no-margin-bottom">`+data_pertanyaan_transaksi[i].quisioner+`</p>
-                            <p>
-                              <input type="number" name="quisioner_transaksi_`+data_pertanyaan_transaksi[i].id_quisioner+`" placeholder="Masukan Jumlah Transaksi">
-                            </p>
+                            <p class="block-strong no-margin text-align-center">`+data_pertanyaan_transaksi[i].quisioner+`</p>
+                            <div class="list inset">
+                              <ul>
+                                <li class="item-content item-input">
+                                  <div class="item-inner">
+                                    <div class="item-inner .input-list">
+                                      <input type="number" name="quisioner_transaksi_`+data_pertanyaan_transaksi[i].id_quisioner+`" placeholder="Masukan Jumlah Transaksi">
+                                      <span class="input-clear-button"></span>
+                                    </div>
+                                  </div>
+                                </li>
+                              </ul>
+                            </div>
                           </div>
                         </div>
                       </div>
                     </div>`);
 
             }
-
+            // <div class="list inset">
+            //   <ul>
+            //     <li class="item-content item-input">
+            //       <div class="item-inner">
+            //         <div class="item-input-wrap">
+            //           <input type="text" placeholder="Your name">
+            //           <span class="input-clear-button"></span>
+            //         </div>
+            //       </div>
+            //     </li>
+            //   <ul>
+            //  </div>
             $('.presensi_sore').on('click',function(){
               app.preloader.show();
               var session = JSON.parse(localStorage.getItem("session"));
@@ -262,10 +285,8 @@ var routes = [
                    success: function(data) {
                      app.preloader.hide();
                      $('.page-previous').remove();
-                     console.log(data.data.jam_in);
-                     localStorage.setItem("kinerja", JSON.stringify(data.data));
-                     // localStorage.setItem("coderating", data.coderating);
-                     apps.router.navigate('/kinerja-harian/');
+                     pesan('Berhasil Absen Sore');
+                     apps.router.navigate('/total-ratting/');
                      $('.my-popup').attr("class","popup my-popup");
                      $('.my-popup').remove();
                      $('.popup-backdrop').attr('class', 'popup-backdrop');
@@ -645,7 +666,7 @@ on: {
     },
     pageInit: function(event, page) {
       var coderatting = localStorage.getItem("coderating");
-      console.log(coderatting);
+      //console.log(coderatting);
       var d = new Date();
       var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
       var days = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
@@ -653,11 +674,59 @@ on: {
       $(".tgl").html("<b>Scan Barcode </b><br>"+days[d.getDay()]+", "+d.getDate()+" "+months[d.getMonth()]+" "+d.getFullYear()+" Pukul : "+d.getHours()+":"+d.getMinutes());
       var vidw=parseInt($('#video').width());
 
-      $('#barcode').attr('src','https://chart.googleapis.com/chart?cht=qr&chl=https://eoffice.bankjateng.co.id/html/rating/masuk/'+coderatting+'&chs=200x200&chld=H|3');
-
+      if(coderatting != 0){
+        $('#barcode').attr('src','https://chart.googleapis.com/chart?cht=qr&chl=https://eoffice.bankjateng.co.id/html/rating/masuk/'+coderatting+'&chs=200x200&chld=H|3');
+      }else{
+        $('#notif').html('Tidak Tersedia. Aktifitas Ratting Selesai');
+      }
     },
     pageBeforeRemove: function(event, page) {
       console.log("index before leave");
+    },
+  }
+},
+{
+path: '/total-ratting/',
+url: './pagesikeren/absen/total-ratting.html',
+on: {
+    pageBeforeIn: function(event, page) {
+
+    },
+    pageAfterIn: function(event, page) {
+      //app.preloader.show();
+      // cari_kehadiran();
+    },
+    pageInit: function(event, page) {
+      var d = new Date();
+      var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+      var days = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
+      var data = JSON.parse(localStorage.getItem('kinerjaharian'));
+
+      var date = data.value['tanggal'].split("-");
+      var tanggal = date[2];
+      var bulan = date[1];
+      var tahun = date[0];
+      $('#tanggal').html(``+tanggal+` `+months[bulan-1]+` `+tahun+``);
+      $('#jam-in').html('Jam In '+data.value['jam_in']+'');
+      $('#jam-out').html('Jam Out '+data.value['jam_out']+'');
+
+      if(data.rating != null)
+      {
+        var full_star = data.ratting - (data.ratting % 1);
+        var no = 0;
+        for(var i = 0 ; i < full_star ; i++){
+          no++;
+          $('.star_'+no+'').html('star_fill');
+        }
+        if(data.ratting % 1 >= 0.5){
+          no++;
+          $('.star_'+no+'').html('star_half_fill');
+        }
+      }
+
+    },
+    pageBeforeRemove: function(event, page) {
+
     },
   }
 }
