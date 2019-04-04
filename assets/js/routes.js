@@ -220,19 +220,39 @@ var routes = [
             $('.div_pertanyaan').append(`
                     <div class="row">
                       <div class="col-100 tablet-100">
-                        <div class="card no-margin justify-content-center">
+                        <div class="card no-margin">
                           <div class="card-content card-content-padding">
-                            <p class="block-strong no-margin-bottom">`+data_pertanyaan_transaksi[i].quisioner+`</p>
-                            <p>
-                              <input type="number" name="quisioner_transaksi_`+data_pertanyaan_transaksi[i].id_quisioner+`" placeholder="Masukan Jumlah Transaksi">
-                            </p>
+                            <p class="block-strong no-margin text-align-center">`+data_pertanyaan_transaksi[i].quisioner+`</p>
+                            <div class="list inset">
+                              <ul>
+                                <li class="item-content item-input">
+                                  <div class="item-inner">
+                                    <div class="item-inner .input-list">
+                                      <input type="number" name="quisioner_transaksi_`+data_pertanyaan_transaksi[i].id_quisioner+`" placeholder="Masukan Jumlah Transaksi">
+                                      <span class="input-clear-button"></span>
+                                    </div>
+                                  </div>
+                                </li>
+                              </ul>
+                            </div>
                           </div>
                         </div>
                       </div>
                     </div>`);
 
             }
-
+            // <div class="list inset">
+            //   <ul>
+            //     <li class="item-content item-input">
+            //       <div class="item-inner">
+            //         <div class="item-input-wrap">
+            //           <input type="text" placeholder="Your name">
+            //           <span class="input-clear-button"></span>
+            //         </div>
+            //       </div>
+            //     </li>
+            //   <ul>
+            //  </div>
             $('.presensi_sore').on('click',function(){
               app.preloader.show();
               var session = JSON.parse(localStorage.getItem("session"));
@@ -282,6 +302,8 @@ var routes = [
              }
 
             });
+
+
       },
       pageInit: function(event, page) {
         console.log("index in");
@@ -398,6 +420,28 @@ var routes = [
 {
   path: '/kinerja-harian/',
   url: './pagesikeren/kinerjaharian/kinerja-harian.html',
+  on: {
+    pageBeforeIn: function(event, page) {
+      console.log("index before in");
+    },
+    pageAfterIn: function(event, page) {
+      //app.preloader.show();
+      // cari_kehadiran();
+    },
+    pageInit: function(event, page) {
+      var d = new Date();
+      var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+      var days = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
+      $("#kethari").html(days[d.getDay()]+", "+d.getDate()+" "+months[d.getMonth()]+" "+d.getFullYear()+" Pukul : "+d.getHours()+":"+d.getMinutes());
+      var kinerja = JSON.parse(localStorage.getItem("kinerja"));
+      $("#jam_in").html(kinerja.jam_in);
+      $("#jam_out").html(kinerja.jam_out);
+    },
+    pageBeforeRemove: function(event, page) {
+      console.log("index before leave");
+    },
+
+  }
 },
 {
   path: '/budaya/',
@@ -623,7 +667,7 @@ on: {
     },
     pageInit: function(event, page) {
       var coderatting = localStorage.getItem("coderating");
-      console.log(coderatting);
+      //console.log(coderatting);
       var d = new Date();
       var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
       var days = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
