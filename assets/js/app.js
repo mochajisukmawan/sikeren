@@ -372,7 +372,7 @@ function cek_absen(jenis_absen){
 							data_pertanyaan = data.data;
 							app.router.navigate('/absen-budaya/');
 						}else{
-							//console.log(data);
+							console.log(data);
 							data_pertanyaan = data.quisioner_sore;
 							data_pertanyaan_transaksi = data.quisioner_transaksi;
 							app.router.navigate('/absen-sore/');
@@ -393,5 +393,3 @@ function pesan(hh){
 	});
 	cek.open();
 }
-
-// api kinerja harian http://10.64.5.40/sikeren/api/lastActivity
