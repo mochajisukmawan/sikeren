@@ -17,6 +17,7 @@ var routes = [
         var session = JSON.parse(localStorage.getItem("session"));
         if(session != null){
           $("#nama").html(session.nama_panggilan);
+          $(".pos-center").attr('src', 'http://10.64.5.40/sikeren/api/preview_foto/'+session.nomor_register);
         }
       },
       pageBeforeRemove: function(event, page) {
