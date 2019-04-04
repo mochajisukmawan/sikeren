@@ -358,9 +358,14 @@ function cek_absen(jenis_absen){
 							app.router.navigate('/ratting/');
 						}else{
 							console.log(data);
-							pesan(data.error_confirm);
-							localStorage.setItem("kinerjaharian", JSON.stringify(data));
-							app.router.navigate('/total-ratting/');
+							if(data.status != 0){
+								pesan(data.error_confirm);
+								localStorage.setItem("kinerjaharian", JSON.stringify(data));
+								app.router.navigate('/total-ratting/');
+							}else{
+								pesan(data.error_confirm);
+							}
+
 						}
 					}else{
 						if(jenis_absen == 'absenPagi'){

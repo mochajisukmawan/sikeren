@@ -265,6 +265,7 @@ var routes = [
                    success: function(data) {
                      app.preloader.hide();
                      $('.page-previous').remove();
+                     localStorage.setItem("kinerjaharian", JSON.stringify(data));
                      pesan('Berhasil Absen Sore');
                      apps.router.navigate('/total-ratting/');
                      $('.my-popup').attr("class","popup my-popup");
