@@ -357,7 +357,6 @@ function cek_absen(jenis_absen){
 							localStorage.setItem("coderating", data.coderating);
 							app.router.navigate('/ratting/');
 						}else{
-<<<<<<< HEAD
 							console.log(data);
 							if(data.status != 0){
 								pesan(data.error_confirm);
@@ -367,12 +366,6 @@ function cek_absen(jenis_absen){
 								pesan(data.error_confirm);
 							}
 
-=======
-							//console.log(data);
-							pesan(data.error_confirm);
-							localStorage.setItem("kinerjaharian", JSON.stringify(data));
-							app.router.navigate('/total-ratting/');
->>>>>>> ea68745bb0f6806e5b0ba7d0e427a82688d21441
 						}
 					}else{
 						if(jenis_absen == 'absenPagi'){
