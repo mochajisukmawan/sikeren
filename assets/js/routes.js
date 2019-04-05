@@ -417,6 +417,37 @@ var routes = [
 {
   path: '/raport/',
   url: './pagesikeren/raport/raport.html',
+  on: {
+    pageBeforeIn: function(event, page) {
+      console.log("index before in");
+    },
+    pageAfterIn: function(event, page) {
+      //app.preloader.show();
+      // cari_kehadiran();
+    },
+    pageInit: function(event, page) {
+      var session = JSON.parse(localStorage.getItem("session"));
+      var kode_register = session.kode_register;
+      var datas = new FormData();
+      datas.append("nomor_register", kode_register);
+      $.ajax({
+         type: "POST",
+         url: "http://10.64.5.40/sikeren/api/minggurapor",
+         data: datas,
+         processData: false,
+         contentType: false,
+         success: function(data) {
+           console.log(data);
+         },
+         error: function(data) {
+         }
+       });
+    },
+    pageBeforeRemove: function(event, page) {
+      console.log("index before leave");
+    },
+
+  }
 },
 {
   path: '/kinerja-harian/',

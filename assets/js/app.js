@@ -385,6 +385,30 @@ function cek_absen(jenis_absen){
 		});
 
 }
+
+function change_raport(){
+
+		var minggu = $('#raport-minggu').val();
+		var session = JSON.parse(localStorage.getItem("session"));
+		var kode_register = session.kode_register;
+		var datas = new FormData();
+		datas.append("nomor_register", kode_register);
+		datas.append("minggu", minggu);
+		$.ajax({
+			 type: "POST",
+			 url: "http://10.64.5.40/sikeren/api/rapor",
+			 data: datas,
+			 processData: false,
+			 contentType: false,
+			 success: function(data) {
+				 console.log(data);
+			 },
+			 error: function(data) {
+			 }
+		 });
+
+}
+
 function pesan(hh){
 	var cek = app.toast.create({
 		text: hh,
