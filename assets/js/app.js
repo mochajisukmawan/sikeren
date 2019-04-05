@@ -388,7 +388,7 @@ function cek_absen(jenis_absen){
 }
 
 function change_raport(){
-
+		app.preloader.show();
 		var minggu = $('#raport-minggu').val();
 		var session = JSON.parse(localStorage.getItem("session"));
 		var kode_register = session.kode_register;
@@ -402,7 +402,15 @@ function change_raport(){
 			 processData: false,
 			 contentType: false,
 			 success: function(data) {
-				 console.log(data);
+				 // console.log(data);
+				 $("#tgl").html(data.start+" - "+data.end);
+				 $(".Kedisiplinan").html(data.nilai_final.summary.kedisiplinan);
+				 $(".ratting-nasabah").html(data.nilai_final.summary.rating);
+				 $(".Produktifitas-Kerja").html(data.nilai_final.summary.produktivitas);
+				 $(".standar-layanan").html(data.nilai_final.summary.budaya);
+				 $(".nilai-raport-akhir").html(data.nilai_final.summary.total);
+				 $("#na").html(data.nilai_final.summary.total);
+				 app.preloader.hide();
 			 },
 			 error: function(data) {
 			 }
@@ -417,4 +425,45 @@ function pesan(hh){
 		closeTimeout: 2000,
 	});
 	cek.open();
+}
+
+function biodata(){
+	app.preloader.show();
+	var session = JSON.parse(localStorage.getItem("session"));
+	var no_reg = session.kode_register;
+	var f_data = new FormData();
+	f_data.append("nomor_register", no_reg);
+	$.ajax({
+		 type: "POST",
+		 url: "http://10.64.5.40/sikeren/api/biodata",
+		 data: f_data,
+		 processData: false,
+		 contentType: false,
+		 success: function(data) {
+			$(".nama").html(session.nama_panggilan);
+		 	$(".profile").attr('src', 'http://10.64.5.40/sikeren/api/preview_foto/'+session.nomor_register);
+			$(".nm_lgkp").html(data["nama"]);
+			$(".ktp").html(data["ktp"]);
+			$(".ttl").html(data["tempat"]+', '+data["tgl_lahir"]);
+			$(".agama").html(data["agama"]);
+			$(".pemb").html(data["nama_pembimbing"]);
+			$(".riwayat").html(data["last_riwayat_karir"]);
+			$(".jabatan").html(data["jabatan"]);
+			$(".uk").html(data["unit_kerja"]);
+			//==
+			$(".no_reg").html(data["nomor_register"]);
+			$(".kd_reg").html(data["kode_register"]);
+			$(".kd_teller").html(data["kode_teller"]);
+			$(".norek").html(data["no_rekening"]);
+			$(".no_npwp").html(data["no_npwp"]);
+			$(".jenis").html(data["jenis"]);
+			$(".tgl_masuk").html(data["tgl_masuk"]);
+			$(".id_uk").html(data["unit_kerja_id"]);
+			app.preloader.hide();
+		 },
+		 error: function(data) {
+		 }
+	 });
+
+
 }

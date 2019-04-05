@@ -422,8 +422,7 @@ var routes = [
       console.log("index before in");
     },
     pageAfterIn: function(event, page) {
-      //app.preloader.show();
-      // cari_kehadiran();
+      change_raport();
     },
     pageInit: function(event, page) {
       var session = JSON.parse(localStorage.getItem("session"));
@@ -437,7 +436,11 @@ var routes = [
          processData: false,
          contentType: false,
          success: function(data) {
-           console.log(data);
+           // console.log(data[0]);
+           for(var i in data){
+             $("#raport-minggu").append("<option value='"+i+"'> "+data[i]+" </option>");
+           }
+
          },
          error: function(data) {
          }
@@ -465,9 +468,7 @@ var routes = [
       var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
       var days = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
       $("#kethari").html(days[d.getDay()]+", "+d.getDate()+" "+months[d.getMonth()]+" "+d.getFullYear()+" Pukul : "+d.getHours()+":"+d.getMinutes());
-      var kinerja = JSON.parse(localStorage.getItem("kinerja"));
-      $("#jam_in").html(kinerja.jam_in);
-      $("#jam_out").html(kinerja.jam_out);
+      
     },
     pageBeforeRemove: function(event, page) {
       console.log("index before leave");
@@ -762,7 +763,28 @@ on: {
 
     },
   }
-}
+},
+{
+  path: '/biodata/',
+  url: './pagesikeren/biodata/biodata.html',
+  on: {
+      pageBeforeIn: function(event, page) {
+        console.log("index before in");
+      },
+      pageAfterIn: function(event, page) {
+        biodata();
 
+      },
+      pageInit: function(event, page) {
+        // var session = JSON.parse(localStorage.getItem("session"));
+        // $(".nama").html(session.nama_panggilan);
+        // $(".profile").attr('src', 'http://10.64.5.40/sikeren/api/preview_foto/'+session.nomor_register);
+
+      },
+      pageBeforeRemove: function(event, page) {
+        console.log("index before leave");
+      },
+    }
+}
 
 ];
