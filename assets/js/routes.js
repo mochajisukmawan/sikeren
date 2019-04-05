@@ -703,7 +703,7 @@ on: {
       var d = new Date();
       var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
       var days = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
-      console.log(days[d.getDay()]);
+      //console.log(days[d.getDay()]);
       $(".tgl").html("<b>Scan Barcode </b><br>"+days[d.getDay()]+", "+d.getDate()+" "+months[d.getMonth()]+" "+d.getFullYear()+" Pukul : "+d.getHours()+":"+d.getMinutes());
       var vidw=parseInt($('#video').width());
 

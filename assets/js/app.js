@@ -355,6 +355,7 @@ function cek_absen(jenis_absen){
 						if(jenis_absen == 'absenPagi'){
 							pesan(data.error_confirm);
 							localStorage.setItem("coderating", data.coderating);
+							//localStorage.setItem("kinerjaharian", JSON.stringify(data));
 							app.router.navigate('/ratting/');
 						}else{
 							console.log(data);
