@@ -441,6 +441,8 @@ var routes = [
              $("#raport-minggu").append("<option value='"+i+"'> "+data[i]+" </option>");
            }
 
+           change_raport();
+
          },
          error: function(data) {
          }
@@ -468,7 +470,7 @@ var routes = [
       var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
       var days = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
       $("#kethari").html(days[d.getDay()]+", "+d.getDate()+" "+months[d.getMonth()]+" "+d.getFullYear()+" Pukul : "+d.getHours()+":"+d.getMinutes());
-      
+
     },
     pageBeforeRemove: function(event, page) {
       console.log("index before leave");
@@ -556,8 +558,8 @@ var routes = [
   url: './pagesikeren/absen/before-abs.html',
 },
 {
-  path: '/informasi/',
-  url: './pagesikeren/informasi/informasi.html',
+  path: '/menu-informasi/',
+  url: './pagesikeren/informasi/menu-informasi.html',
 },{
   path: '/perjanjian/',
   url: './pagesikeren/perjanjian/perjanjian.html',
@@ -785,6 +787,93 @@ on: {
         console.log("index before leave");
       },
     }
-}
+},
+{
+  path: '/informasi-pribadi/',
+  url: './pagesikeren/informasi/informasi-pribadi.html',
+  on: {
+      pageBeforeIn: function(event, page) {
+        console.log("index before in");
+      },
+      pageAfterIn: function(event, page) {
+        console.log("index after in");
+      },
+      pageInit: function(event, page) {
+        var datas = new FormData();
+        var session = JSON.parse(localStorage.getItem("session"));
+        var kode_register = session.kode_register;
+        datas.append("kode_register", kode_register);
+          $.ajax({
+             type: "POST",
+             url: "http://10.64.5.40/sikeren/api/informasi/pribadi",
+             data: datas,
+             processData: false,
+             contentType: false,
+             success: function(data) {
+               console.log(data);
+             },
+             error: function(data) {
+             }
+           });
+      },
+      pageBeforeRemove: function(event, page) {
+        console.log("index before leave");
+      },
+  }
+},
+{
+  path: '/informasi-umum/',
+  url: './pagesikeren/informasi/informasi-umum.html',
+  on: {
+      pageBeforeIn: function(event, page) {
+        console.log("index before in");
+      },
+      pageAfterIn: function(event, page) {
+        console.log("index after in");
+      },
+      pageInit: function(event, page) {
+        var datas = new FormData();
+        var session = JSON.parse(localStorage.getItem("session"));
+        var kode_register = session.kode_register;
+        datas.append("kode_register", kode_register);
+          $.ajax({
+             type: "POST",
+             url: "http://10.64.5.40/sikeren/api/informasi/umum",
+             data: datas,
+             processData: false,
+             contentType: false,
+             success: function(data) {
+               console.log(data);
+               for(var i in data){
+                 var mulai_publish = data[i].mulai_publish.split(/[\s-]/);
+                 var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+                 var date = ""+mulai_publish[2]+" "+months[mulai_publish[1]-1]+" "+mulai_publish[0];
+                 console.log(date);
+
+                 $('.i_umum-cont').append(`    <div class="card demo-card-header-pic">
+                       <div id="image-informasi"></div>
+                       <div class="card-content card-content-padding">
+                          <p class="date">`+date+`</p>
+                         <p class="header"><H3>`+data[i].judul+`</H3></p>
+                         <p>`+data[i].short_desc+`</p>
+                       </div>
+                       <div class="card-footer"><a href="#" class="link">Read more</a></div>
+                     </div>`);
+
+                  if(data[i].thumbnail != null){
+                    $('#image-informasi').attr('style','background-image:url(http://10.64.5.40/sikeren/api/preview_image_informasi/sikeren.png)');
+                    $('#image-informasi').attr('class','card-header align-items-flex-end');
+                  }
+                }
+             },
+             error: function(data) {
+             }
+           });
+      },
+      pageBeforeRemove: function(event, page) {
+        console.log("index before leave");
+      },
+  }
+},
 
 ];
