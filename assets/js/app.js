@@ -287,7 +287,7 @@ function cari_kehadiran(){
 		 processData: false,
 		 contentType: false,
 		 success: function(data) {
-			 console.log(data);
+			 //console.log(data);
 			 var kehadiran=data.kehadiran;
 			 for(var i in kehadiran){
 			 	var date = kehadiran[i].tanggal.split("-");
@@ -350,7 +350,7 @@ function cek_absen(jenis_absen){
 			processData: false,
 			contentType: false,
 			success: function(data) {
-					console.log(data);
+					//console.log(data);
 					if(data.error == true){
 						if(jenis_absen == 'absenPagi'){
 							pesan(data.error_confirm);
@@ -358,7 +358,7 @@ function cek_absen(jenis_absen){
 							//localStorage.setItem("kinerjaharian", JSON.stringify(data));
 							app.router.navigate('/ratting/');
 						}else{
-							console.log(data);
+							//console.log(data);
 							if(data.status != 0){
 								pesan(data.error_confirm);
 								localStorage.setItem("kinerjaharian", JSON.stringify(data));
@@ -373,7 +373,7 @@ function cek_absen(jenis_absen){
 							data_pertanyaan = data.data;
 							app.router.navigate('/absen-budaya/');
 						}else{
-							console.log(data);
+							//console.log(data);
 							data_pertanyaan = data.quisioner_sore;
 							data_pertanyaan_transaksi = data.quisioner_transaksi;
 							app.router.navigate('/absen-sore/');
@@ -464,6 +464,58 @@ function biodata(){
 		 error: function(data) {
 		 }
 	 });
+}
 
-
+function kinerja(){
+	app.preloader.show();
+	var session = JSON.parse(localStorage.getItem("session"));
+	var no_reg = session.nomor_register;
+	var f_data = new FormData();
+	// penarikan tunai
+	var jam_in,jam_out,pen_tunai,set_tunai,cnc,tgl;
+	f_data.append("nomor_register", no_reg);
+	$.ajax({
+		 type: "POST",
+		 url: "http://10.64.5.40/sikeren/api/lastActivity",
+		 data: f_data,
+		 processData: false,
+		 contentType: false,
+		 success: function(data) {
+			 //console.log(data.rating);
+			 jam_in		=data.data.self_assessment[0].jam_in;
+			 jam_out	=data.data.self_assessment[0].jam_out;
+			 tgl			=data.data.self_assessment[0].tanggal;
+			 pen_tunai=data.data.value_self_assessment[10].nilai;
+			 set_tunai=data.data.value_self_assessment[11].nilai;
+			 cnc			=data.data.value_self_assessment[12].nilai;
+			 var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+       var days = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
+			 var date = tgl.split("-");
+			 var tanggal = date[2];
+			 var bulan = date[1];
+			 var tahun = date[0];
+			 $("#kethari").html(''+tanggal+' '+months[bulan-1]+' '+tahun+' ');
+			 $("#jam-in").html("Jam In : "+jam_in);
+			 $("#jam-out").html("Jam Out : "+jam_out);
+			 $("#pen_tunai").html("Transaksi Penarikan Tunai : "+pen_tunai);
+			 $("#set_tunai").html("Transaksi Setoran Tunai : "+set_tunai);
+			 $("#cnc").html("Transaksi Cancel (CNC) : "+cnc);
+			 if(data.rating != null)
+       {
+         var full_star = data.rating - (data.rating % 1);
+         var no = 0;
+         for(var i = 0 ; i < full_star ; i++){
+           no++;
+           $('.star_'+no+'').html('star_fill');
+         }
+         if(data.rating % 1 >= 0.5){
+           no++;
+           $('.star_'+no+'').html('star_half_fill');
+         }
+       }
+			 app.preloader.hide();
+		 },
+		 error: function(data) {
+		 }
+	 });
 }

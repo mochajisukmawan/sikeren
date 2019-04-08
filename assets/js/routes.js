@@ -84,7 +84,7 @@ var routes = [
               console.log('We have encountered an error: ' + e);
             }
         });
-        console.log(data_pertanyaan);
+        //console.log(data_pertanyaan);
         for(var i in data_pertanyaan){
           $('.div_pertanyaan').append(`
                   <div class="row">
@@ -240,20 +240,7 @@ var routes = [
                         </div>
                       </div>
                     </div>`);
-
             }
-            // <div class="list inset">
-            //   <ul>
-            //     <li class="item-content item-input">
-            //       <div class="item-inner">
-            //         <div class="item-input-wrap">
-            //           <input type="text" placeholder="Your name">
-            //           <span class="input-clear-button"></span>
-            //         </div>
-            //       </div>
-            //     </li>
-            //   <ul>
-            //  </div>
             $('.presensi_sore').on('click',function(){
               app.preloader.show();
               var session = JSON.parse(localStorage.getItem("session"));
@@ -394,7 +381,7 @@ var routes = [
              success: function(data) {
                // $("#waktu").append('<option value="" hidden>Tanggal</option>');
                 var periode = data.periode;
-                console.log(periode);
+                //console.log(periode);
                 for(var i in periode){
                   var date = periode[i].periode.split("-");
                   var tahun = date[0];
@@ -461,14 +448,10 @@ var routes = [
     },
     pageAfterIn: function(event, page) {
       //app.preloader.show();
-      // cari_kehadiran();
+      kinerja();
     },
     pageInit: function(event, page) {
-      var d = new Date();
-      var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-      var days = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
-      $("#kethari").html(days[d.getDay()]+", "+d.getDate()+" "+months[d.getMonth()]+" "+d.getFullYear()+" Pukul : "+d.getHours()+":"+d.getMinutes());
-      
+      app.preloader.hide();
     },
     pageBeforeRemove: function(event, page) {
       console.log("index before leave");
@@ -504,7 +487,7 @@ var routes = [
              processData: false,
              contentType: false,
              success: function(data) {
-               console.log(data);
+               //console.log(data);
                for(var i in data){
                $('.budaya-cont').append(`
                                        <div class="card card-outline">
