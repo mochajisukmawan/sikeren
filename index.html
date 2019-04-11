@@ -2,6 +2,16 @@
 <html>
 
 <style>
+.demo-card-header-pic .card-header {
+  height: 40vw;
+  background-size: cover;
+  background-position: center;
+  color: #fff;
+}
+.demo-card-header-pic .card-content-padding .date{
+  color: #8e8e93;
+}
+
 .demo-swiper .swiper-slide {
   font-size: 25px;
   font-weight: 300;
@@ -39,10 +49,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, minimal-ui, viewport-fit=cover">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="#3a57c4">
-    <title>Sikeren</title>
+    <title>Magang Dharma</title>
     <link rel="stylesheet" href="assets/css/framework7.ios.min.css">
     <link rel="stylesheet" href="assets/css/font-awesome.min.css">
     <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="icon" type="image/png" href="assets/img/logo_android_magang.png" />
+    <link rel="apple-touch-icon" sizes="57x57" href="assets/img/logo_android_magang.png" />
+    <link rel="apple-touch-icon" sizes="72x72" href="assets/img/logo_android_magang.png" />
+    <link rel="apple-touch-icon" sizes="114x114" href="assets/img/logo_android_magang.png" />
+    <link rel="apple-touch-icon" sizes="144x144" href="assets/img/logo_android_magang.png" />
+    <link rel="apple-touch-startup-image" href="assets/img/logo_android_magang.png" media="(device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)">
+    <link rel="apple-touch-startup-image" href="assets/img/logo_android_magang.png" media="(device-width: 375px) and (device-height: 667px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)">
+    <link rel="apple-touch-startup-image" href="assets/img/logo_android_magang.png" media="(device-width: 414px) and (device-height: 736px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)">
+    <link rel="apple-touch-startup-image" href="assets/img/logo_android_magang.png" media="(device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)">
+    <link rel="apple-touch-startup-image" href="assets/img/logo_android_magang.png" media="(min-device-width: 768px) and (max-device-width: 1024px) and (-webkit-min-device-pixel-ratio: 2) and (orientation: portrait)">
+    <link rel="apple-touch-startup-image" href="assets/img/logo_android_magang.png" media="(min-device-width: 834px) and (max-device-width: 834px) and (-webkit-min-device-pixel-ratio: 2) and (orientation: portrait)">
+    <link rel="apple-touch-startup-image" href="assets/img/logo_android_magang.png" media="(min-device-width: 1024px) and (max-device-width: 1024px) and (-webkit-min-device-pixel-ratio: 2) and (orientation: portrait)">
 </head>
 <!-- // -->
 <body>
@@ -79,7 +101,10 @@
                             <a href="#" class="link icon-only panel-open" data-panel="left"><i class="material-icons">menu</i></a>
                         </div>
                         <div class="right">
-                            <a href="/notifications/" class="link icon-only"><i class="material-icons">notifications</i></a>
+                            <a href="" class="link icon-only isi-notif">
+                              <i class="icon material-icons notif">notifications</i>
+                              <!-- <i class="icon material-icons md-only">notifications<span class="badge color-red">5</span></i> -->
+                            </a>
                             <a href="#" data-popover=".main-menu" class="link icon-only popover-open"><i class="material-icons">more_vert</i></a>
                         </div>
                     </div>
@@ -104,17 +129,8 @@
                                 <div class="col-100">
                                   <div data-pagination='{"el": ".swiper-pagination"}' data-space-between="50" class="swiper-container swiper-init demo-swiper">
                                     <div class="swiper-pagination"></div>
-                                    <div class="swiper-wrapper">
-                                      <div class="swiper-slide"><img src="assets/img/smpul1.jpg" alt=""></div>
-                                      <div class="swiper-slide">Slide 2</div>
-                                      <div class="swiper-slide">Slide 3</div>
-                                      <div class="swiper-slide">Slide 4</div>
-                                      <div class="swiper-slide">Slide 5</div>
-                                      <div class="swiper-slide">Slide 6</div>
-                                      <div class="swiper-slide">Slide 7</div>
-                                      <div class="swiper-slide">Slide 8</div>
-                                      <div class="swiper-slide">Slide 9</div>
-                                      <div class="swiper-slide">Slide 10</div>
+                                    <div class="swiper-wrapper slider-home">
+                                      <div class="swiper-slide slide1"><img src="assets/img/loader.gif" alt=""></div>
                                     </div>
                                   </div>
                                 </div>
@@ -192,7 +208,7 @@
                                     </a>
                                 </div>
                                 <div class="col-33 tablet-33">
-                                    <a href="/informasi/">
+                                    <a href="/menu-informasi/">
                                         <div class="item-widget">
                                             <div class="item-widget-icon"><i class="fa fa-info-circle"></i></div>
                                             <div class="item-widget-info">

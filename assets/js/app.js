@@ -8,7 +8,6 @@ Version:1.0
 // Dom7
 
 var $$ = Dom7;
-
 // Framework7 App main instance
 
 var app  = new Framework7({
@@ -165,7 +164,7 @@ function authenticate(callback){
     datas.append("user_password", session.hash);
     $.ajax({
        type: "POST",
-       url: "http://10.64.5.40/sikeren/api/validation",
+       url: api_url+"validation",
        data: datas,
        processData: false,
        contentType: false,
@@ -247,18 +246,18 @@ function cari_us(){
 	datas.append("bulan_tahun", tanggal_us);
 	$.ajax({
 		 type: "POST",
-		 url: "http://10.64.5.40/sikeren/api/uang_saku",
+		 url: api_url+"uang_saku",
 		 data: datas,
 		 processData: false,
 		 contentType: false,
 		 success: function(data) {
 
-			 $('.us').html("Rp "+data.uang_saku);
-			 $('.tp').html("Rp "+data.t_penampilan);
-			 $('.tbks').html("Rp "+data.t_bpjs_kes);
-			 $('.tbkn').html("Rp "+data.t_bpjs_ktn);
-			 $('.um').html("Rp "+data.uang_makan);
-			 $('.thp').html("Rp "+data.take_home_pay);
+			 $('.us').html("Rp "+rupiah(data.uang_saku)+",-");
+			 $('.tp').html("Rp "+rupiah(data.t_penampilan)+",-");
+			 $('.tbks').html("Rp "+rupiah(data.t_bpjs_kes)+",-");
+			 $('.tbkn').html("Rp "+rupiah(data.t_bpjs_ktn)+",-");
+			 $('.um').html("Rp "+rupiah(data.uang_makan)+",-");
+			 $('.thp').html("Rp "+rupiah(data.take_home_pay)+",-");
 			 app.preloader.hide();
 		 },
 		 error: function(data) {
@@ -274,7 +273,6 @@ function cari_kehadiran(){
 	var tahun = date[0];
 	var bulan = date[1];
 	$('.keterangan-kehadiran').html("Daftar Kehadiran Bulan "+months[bulan-1]+" "+tahun);
-
 	var session = JSON.parse(localStorage.getItem("session"));
 	var nomor_register = session.nomor_register;
 	var datas = new FormData();
@@ -282,7 +280,7 @@ function cari_kehadiran(){
 	datas.append("bulan_tahun", tanggal_us);
 	$.ajax({
 		 type: "POST",
-		 url: "http://10.64.5.40/sikeren/api/kehadiran",
+		 url: api_url+"kehadiran",
 		 data: datas,
 		 processData: false,
 		 contentType: false,
@@ -345,7 +343,7 @@ function cek_absen(jenis_absen){
 	 datas.append("nomor_register", nomor_register);
 	 $.ajax({
 			type: "POST",
-			url: "http://10.64.5.40/sikeren/api/"+jenis_absen+"",
+			url: api_url+""+jenis_absen+"",
 			data: datas,
 			processData: false,
 			contentType: false,
@@ -397,13 +395,22 @@ function change_raport(){
 		datas.append("minggu", minggu);
 		$.ajax({
 			 type: "POST",
-			 url: "http://10.64.5.40/sikeren/api/rapor",
+			 url: api_url+"rapor",
 			 data: datas,
 			 processData: false,
 			 contentType: false,
 			 success: function(data) {
-				 // console.log(data);
-				 $("#tgl").html(data.start+" - "+data.end);
+				 //console.log(data);
+				 var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+				 var date = data.start.split("-");
+				 var tanggal = date[2];
+				 var bulan = date[1];
+				 var tahun = date[0];
+				 var date1 = data.end.split("-");
+				 var tanggal1 = date1[2];
+				 var bulan1 = date1[1];
+				 var tahun1 = date1[0];
+				 $("#tgl").html(''+tanggal+' '+months[bulan-1]+' '+tahun+' - '+tanggal1+' '+months[bulan-1]+' '+tahun1+'');
 				 $(".Kedisiplinan").html(data.nilai_final.summary.kedisiplinan);
 				 $(".ratting-nasabah").html(data.nilai_final.summary.rating);
 				 $(".Produktifitas-Kerja").html(data.nilai_final.summary.produktivitas);
@@ -418,47 +425,48 @@ function change_raport(){
 
 }
 
-function pesan(hh){
+function pesan(hh,position='center'){
 	var cek = app.toast.create({
 		text: hh,
-		position: 'center',
+		position: position,
 		closeTimeout: 2000,
 	});
 	cek.open();
 }
 
 function biodata(){
-	app.preloader.show();
 	var session = JSON.parse(localStorage.getItem("session"));
 	var no_reg = session.kode_register;
 	var f_data = new FormData();
 	f_data.append("nomor_register", no_reg);
 	$.ajax({
 		 type: "POST",
-		 url: "http://10.64.5.40/sikeren/api/biodata",
+		 url: api_url+"biodata",
 		 data: f_data,
 		 processData: false,
 		 contentType: false,
 		 success: function(data) {
 			$(".nama").html(session.nama_panggilan);
-		 	$(".profile").attr('src', 'http://10.64.5.40/sikeren/api/preview_foto/'+session.nomor_register);
+		 	$(".profile").attr('src', api_url+'preview_foto/'+session.nomor_register);
 			$(".nm_lgkp").html(data["nama"]);
 			$(".ktp").html(data["ktp"]);
-			$(".ttl").html(data["tempat"]+', '+data["tgl_lahir"]);
+			var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+			var days = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
+			var date = data["tgl_lahir"].split("-");
+			var bulan = date[1];
+			$(".ttl").html(data["tempat"]+', '+date[2]+' '+months[bulan-1]+' '+date[0]);
 			$(".agama").html(data["agama"]);
 			$(".pemb").html(data["nama_pembimbing"]);
 			$(".riwayat").html(data["last_riwayat_karir"]);
 			$(".jabatan").html(data["jabatan"]);
 			$(".uk").html(data["unit_kerja"]);
 			//==
-			$(".no_reg").html(data["nomor_register"]);
 			$(".kd_reg").html(data["kode_register"]);
 			$(".kd_teller").html(data["kode_teller"]);
 			$(".norek").html(data["no_rekening"]);
 			$(".no_npwp").html(data["no_npwp"]);
 			$(".jenis").html(data["jenis"]);
 			$(".tgl_masuk").html(data["tgl_masuk"]);
-			$(".id_uk").html(data["unit_kerja_id"]);
 			app.preloader.hide();
 		 },
 		 error: function(data) {
@@ -476,44 +484,251 @@ function kinerja(){
 	f_data.append("nomor_register", no_reg);
 	$.ajax({
 		 type: "POST",
-		 url: "http://10.64.5.40/sikeren/api/lastActivity",
+		 url: api_url+"lastActivity",
 		 data: f_data,
 		 processData: false,
 		 contentType: false,
 		 success: function(data) {
-			 //console.log(data.rating);
-			 jam_in		=data.data.self_assessment[0].jam_in;
-			 jam_out	=data.data.self_assessment[0].jam_out;
-			 tgl			=data.data.self_assessment[0].tanggal;
-			 pen_tunai=data.data.value_self_assessment[10].nilai;
-			 set_tunai=data.data.value_self_assessment[11].nilai;
-			 cnc			=data.data.value_self_assessment[12].nilai;
-			 var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-       var days = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
-			 var date = tgl.split("-");
-			 var tanggal = date[2];
-			 var bulan = date[1];
-			 var tahun = date[0];
-			 $("#kethari").html(''+tanggal+' '+months[bulan-1]+' '+tahun+' ');
-			 $("#jam-in").html("Jam In : "+jam_in);
-			 $("#jam-out").html("Jam Out : "+jam_out);
-			 $("#pen_tunai").html("Transaksi Penarikan Tunai : "+pen_tunai);
-			 $("#set_tunai").html("Transaksi Setoran Tunai : "+set_tunai);
-			 $("#cnc").html("Transaksi Cancel (CNC) : "+cnc);
-			 if(data.rating != null)
-       {
-         var full_star = data.rating - (data.rating % 1);
-         var no = 0;
-         for(var i = 0 ; i < full_star ; i++){
-           no++;
-           $('.star_'+no+'').html('star_fill');
-         }
-         if(data.rating % 1 >= 0.5){
-           no++;
-           $('.star_'+no+'').html('star_half_fill');
-         }
-       }
+			 console.log(data);
+			 var cek=data.data.value_self_assessment;
+			 if(cek.length<10){
+				 jam_in		=data.data.self_assessment[0].jam_in;
+				 jam_out	=data.data.self_assessment[0].jam_out;
+				 tgl			=data.data.self_assessment[0].tanggal;
+				 var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+	       var days = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
+				 var date = tgl.split("-");
+				 var bulan = date[1];
+				 $("#kethari").html(''+date[2]+' '+months[bulan-1]+' '+date[0]+' ');
+				 $("#transaksi").html(`<p>Anda belum melakukan absen sore</p>`);
+				 if(data.rating != null)
+	       {
+	         var full_star = data.rating - (data.rating % 1);
+	         var no = 0;
+	         for(var i = 0 ; i < full_star ; i++){
+	           no++;
+	           $('.star_'+no+'').html('star_fill');
+	         }
+	         if(data.rating % 1 >= 0.5){
+	           no++;
+	           $('.star_'+no+'').html('star_half_fill');
+	         }
+	       }
+				 //
+			 }else {
+				 //
+				 jam_in		=data.data.self_assessment[0].jam_in;
+				 jam_out	=data.data.self_assessment[0].jam_out;
+				 tgl			=data.data.self_assessment[0].tanggal;
+				 pen_tunai=data.data.value_self_assessment[10].nilai;
+				 set_tunai=data.data.value_self_assessment[11].nilai;
+				 cnc			=data.data.value_self_assessment[12].nilai;
+				 var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+	       var days = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
+				 var date = tgl.split("-");
+				 var tanggal = date[2];
+				 var bulan = date[1];
+				 var tahun = date[0];
+				 $("#kethari").html(''+tanggal+' '+months[bulan-1]+' '+tahun+' ');
+				 $("#jam-in").html("Jam In : "+jam_in);
+				 $("#jam-out").html("Jam Out : "+jam_out);
+				 $("#pen_tunai").html("Transaksi Penarikan Tunai : "+pen_tunai);
+				 $("#set_tunai").html("Transaksi Setoran Tunai : "+set_tunai);
+				 $("#cnc").html("Transaksi Cancel (CNC) : "+cnc);
+				 if(data.rating != null)
+	       {
+	         var full_star = data.rating - (data.rating % 1);
+	         var no = 0;
+	         for(var i = 0 ; i < full_star ; i++){
+	           no++;
+	           $('.star_'+no+'').html('star_fill');
+	         }
+	         if(data.rating % 1 >= 0.5){
+	           no++;
+	           $('.star_'+no+'').html('star_half_fill');
+	         }
+	       }
+			 }
 			 app.preloader.hide();
+
+		 },
+		 error: function(data) {
+		 }
+	 });
+}
+
+function informasi(jenis){
+	console.log(jenis);
+	var datas = new FormData(),datas1 = new FormData();
+	var session = JSON.parse(localStorage.getItem("session"));
+	var kode_register = session.kode_register;
+	datas.append("kode_register", kode_register);
+		$.ajax({
+			 type: "POST",
+			 url: api_url+"informasi/"+jenis[0],
+			 data: datas,
+			 processData: false,
+			 contentType: false,
+			 success: function(data) {
+				 console.log(data);
+				 for(var i in data){
+					 var mulai_publish = data[i].mulai_publish.split(/[\s-]/);
+					 var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+					 var date = ""+mulai_publish[2]+" "+months[mulai_publish[1]-1]+" "+mulai_publish[0];
+					 //console.log(date);
+					 $('.i_umum-cont').append(`<div class="card demo-card-header-pic">
+																			 <div id="`+jenis[0]+`image-informasi`+i+`">
+																			 </div>
+																			<div class="card-content card-content-padding">
+																				<p class="date">`+date+`</p>
+																				<p class="header"><H3>`+data[i].judul+`</H3></p>
+																				<p>`+data[i].short_desc+`</p>
+																			</div>
+																			<div class="card-footer">
+																				<a href="#" class="link add-task-link popup-open" data-popup=".`+jenis[0]+`_add-task-popup_`+i+`">Read more</a>
+																			</div>
+																		</div>`);
+						if(data[i].thumbnail != null){
+							$('#'+jenis[0]+'image-informasi'+i+'').attr('style','background-image:url(http://10.64.5.40/sikeren/api/preview_image_informasi/'+data[i].thumbnail+')');
+							$('#'+jenis[0]+'image-informasi'+i+'').attr('class','card-header align-items-flex-end');
+						}
+					}
+					if(jenis[2]){
+						localStorage.setItem('notif', JSON.stringify(jenis[2]));
+						app.router.navigate('/menu-informasi/');
+					}
+					popup_info(data,jenis[0],date);
+					app.preloader.hide();
+			 },
+			 error: function(data) {
+			 }
+		 });
+	var nomor_register = session.nomor_register;
+	datas1.append("nomor_register", nomor_register);
+	$.ajax({
+		 type: "POST",
+		 url: api_url+"informasi/"+jenis[1],
+		 data: datas1,
+		 processData: false,
+		 contentType: false,
+		 success: function(data) {
+			 console.log(data);
+			 for(var i in data){
+				 var mulai_publish = data[i].mulai_publish.split(/[\s-]/);
+				 var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+				 var date = ""+mulai_publish[2]+" "+months[mulai_publish[1]-1]+" "+mulai_publish[0];
+				 //console.log(date);
+				 $('.i_pribadi-cont').append(`<div class="card demo-card-header-pic">
+																		 <div id="`+jenis[1]+`image-informasi`+i+`">
+																		 </div>
+																		<div class="card-content card-content-padding">
+																			<p class="date">`+date+`</p>
+																			<p class="header"><H3>`+data[i].judul+`</H3></p>
+																			<p>`+data[i].short_desc+`</p>
+																		</div>
+																		<div class="card-footer">
+																			<a href="#" class="link add-task-link popup-open" data-popup=".`+jenis[1]+`_add-task-popup_`+i+`">Read more</a>
+																		</div>
+																	</div>`);
+					if(data[i].thumbnail != null){
+						$('#'+jenis[1]+'image-informasi'+i+'').attr('style','background-image:url(http://10.64.5.40/sikeren/api/preview_image_informasi/'+data[i].thumbnail+')');
+						$('#'+jenis[1]+'image-informasi'+i+'').attr('class','card-header align-items-flex-end');
+					}
+				}
+				popup_info(data,jenis[1],date);
+				app.preloader.hide();
+		 },
+		 error: function(data) {
+		 }
+	 });
+}
+function popup_info(data,jenis,date){
+	//$(".popup").remove();
+	for(var i in data){
+		$('.tab').after(`
+			<div class="popup `+jenis+`_add-task-popup_`+i+`">
+					<div class="view popup-view">
+							<div class="page">
+									<div class="navbar">
+											<div class="navbar-inner">
+													<div class="left"><a href="#" class="link popup-close"><i class="fa fa-close"></i> <span>Close</span></a></div>
+													<div class="title">Informasi Umum</div>
+											</div>
+									</div>
+									<div class="page-content">
+												<div class="tabs">
+													<div class="tab tab-active" id="pro_overview">
+															<div class="project-view">
+																	<div class="card-box">
+																			<h4 class="project-title">`+data[i].kepada+`</h4>
+																			<div class="m-b-15">
+																				 <span class="text-muted">Informasi</span>
+																				 <span class="text-muted">`+jenis+`</span>
+																				 <p>`+data[i].short_desc+`</p>
+																			</div>
+																	</div>
+																	<div class="card-box">
+																			<div class="sub-title">`+data[i].judul+`</div>
+																			<p class="desc-cont text-muted">
+																				<img src="`+api_url+`preview_image_informasi/sikeren.png" width="100%" height="100%" class="lazy lazy-fade-in demo-lazy"/>
+																			</p>
+																			<div class="due-date"><i class="fa fa-calendar"></i> <span>`+date+`</span></div>
+																	</div>
+
+																	<div class="card-box project-box">
+																			<div class="pro-deadline m-b-15">
+																					<div class="sub-title">
+																							Pengumuman
+																					</div>
+																			</div>
+																				`+data[i].pengumuman+`
+																	</div>
+															</div>
+													</div>
+												</div>
+									</div>
+							</div>
+					</div>
+			</div>
+			`);
+	}
+}
+function rupiah(bilangan){
+	var	number_string = bilangan.toString(),
+	sisa 	= number_string.length % 3,
+	rupiah 	= number_string.substr(0, sisa),
+	ribuan 	= number_string.substr(sisa).match(/\d{3}/g);
+	if (ribuan) {
+		separator = sisa ? '.' : '';
+		rupiah += separator + ribuan.join('.');
+	}
+	return rupiah;
+}
+
+function notifikasi(){
+	var no_reg = JSON.parse(localStorage.getItem("session"));
+	no_reg=no_reg.nomor_register;
+	var f_data = new FormData();
+	f_data.append("nomor_register", no_reg);
+	$.ajax({
+		 type: "POST",
+		 url: api_url+"informasi/notifunread",
+		 data: f_data,
+		 processData: false,
+		 contentType: false,
+		 success: function(data) {
+				//console.log(data[0].informasi_unread);
+				if(data[0].informasi_unread){
+					$(".notif").html('notifications<span class="badge color-red bg">'+data[0].informasi_unread+'</span>');
+					$(".isi-notif").attr('value', ''+data[0].informasi_unread+'');
+					var jenis=["umum","pribadi",data[0].informasi_unread];
+					$(".isi-notif").on('click',function(){
+	          informasi(jenis);
+	        });
+				}else {
+					$(".notif").html("notifications");
+					$(".bg").remove();
+				}
 		 },
 		 error: function(data) {
 		 }

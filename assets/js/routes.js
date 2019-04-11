@@ -1,13 +1,14 @@
+var api_url="http://10.64.5.40/sikeren/api/";
 var routes = [
 {
   path: '/',
   url: './index.html',
   on: {
       pageBeforeIn: function(event, page) {
-        console.log("index befioe in");
+        app.preloader.hide();
       },
       pageAfterIn: function(event, page) {
-        console.log("index after in");
+        notifikasi();
       },
       pageInit: function(event, page) {
         authenticate(function(data){
@@ -16,23 +17,62 @@ var routes = [
         });
         var session = JSON.parse(localStorage.getItem("session"));
         if(session != null){
+          notifikasi();
           $("#nama").html(session.nama_panggilan);
-          $(".pos-center").attr('src', 'http://10.64.5.40/sikeren/api/preview_foto/'+session.nomor_register);
+          $(".pos-center").attr('src', api_url+'preview_foto/'+session.nomor_register);
+          var nomor_register = session.nomor_register;
+         	var datas = new FormData();
+          datas.append("nomor_register", nomor_register);
+          $.ajax({
+             type: "POST",
+             url: api_url+"banner",
+             data: datas,
+             processData: false,
+             contentType: false,
+             success: function(data) {
+               if(data.length>0){
+                 $(".slider-home").html("");
+               }
+               for(var x=0;x<data.length;x++){
+                 $(".slider-home").append('<div class="swiper-slide slide1"><img src="'+api_url+'preview_banner/'+data[x]['banner_file']+'" alt=""></div>');
+               }
+               if(data.length>0){
+                 var swiper = app.swiper.get('.swiper-container');
+                 swiper.update();
+               }
+             },
+             error: function(data) {
+               pesan("Tidak dapat memuat gambar slider","top");
+             }
+           });
         }
       },
       pageBeforeRemove: function(event, page) {
-        console.log("index before leave");
       },
   }
 },
 {
   path: '/login/',
   url: './pagesikeren/login.html',
+  on: {
+      pageBeforeIn: function(event, page) {
+
+      },
+      pageAfterIn: function(event, page) {
+      },
+      pageInit: function(event, page) {
+
+      },
+      pageBeforeRemove: function(event, page) {
+
+      },
+  }
 },
 {
   path: '/menu-absen/',
   url: './pagesikeren/absen/menu-absen.html',
   async(routeTo, routeFrom, resolve, reject) {
+    app.preloader.show();
     is_login(function(){
       var app = page.app
       app.router.navigate('/login/');
@@ -43,7 +83,7 @@ var routes = [
         console.log("index before in");
       },
       pageAfterIn: function(event, page) {
-        console.log("index after in");
+        app.preloader.hide();
       },
       pageInit: function(event, page) {
         console.log("index in");
@@ -57,6 +97,7 @@ var routes = [
   path: '/absen-pagi/',
   url: './pagesikeren/absen/absen-pagi.html',
   async(routeTo, routeFrom, resolve, reject) {
+    //app.preloader.show();
     is_login(function(){
       resolve({ url: 'pages/login.html' });
     });
@@ -64,6 +105,7 @@ var routes = [
   on: {
       pageBeforeIn: function(event, page) {
         console.log("index before in");
+        app.preloader.show();
       },
       pageAfterIn: function(event, page) {
         var apps = page.app;
@@ -72,7 +114,39 @@ var routes = [
         var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
         var days = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
         $("#kethari").html(days[d.getDay()]+", "+d.getDate()+" "+months[d.getMonth()]+" "+d.getFullYear()+" Pukul : "+d.getHours()+":"+d.getMinutes());
-         var vidw=parseInt($('#video').width());
+        var vidw=parseInt($('#video').width());
+        try{
+          var video = document.getElementById('video');
+          if(navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+       // Not adding `{ audio: true }` since we only want video now
+               navigator.mediaDevices.getUserMedia({ video: true }).then(function(stream) {
+                       //video.src = window.URL.createObjectURL(stream);
+                       video.srcObject = stream;
+                       video.play();
+                   }).catch(function(e){
+                     pesan("Gagal memuat kamera : "+e,"top",5000);
+                   });
+           }
+            // Legacy code below: getUserMedia
+           else if(navigator.getUserMedia) { // Standard
+               navigator.getUserMedia({ video: true }, function(stream) {
+                   video.src = stream;
+                   video.play();
+               }, function(e){pesan("Gagal memuat kamera : "+e,"top",5000);});
+           } else if(navigator.webkitGetUserMedia) { // WebKit-prefixed
+               navigator.webkitGetUserMedia({ video: true }, function(stream){
+                   video.src = window.webkitURL.createObjectURL(stream);
+                   video.play();
+               }, function(e){pesan("Gagal memuat kamera : "+e,"top",5000);});
+           } else if(navigator.mozGetUserMedia) { // Mozilla-prefixed
+               navigator.mozGetUserMedia({ video: true }, function(stream){
+                   video.srcObject = stream;
+                   video.play();
+               }, function(e){pesan("Gagal memuat kamera : "+e,"top",5000);});
+           }else{
+             pesan("Gagal memuat kamera","top");
+           }
+         }catch(e){pesan(e,"top");}
          $('.absenpagi').on('click',function(){
            $('#div_canvas').html('<canvas id="canvas" width="'+vidw+'" height="385"></canvas>');
             try{
@@ -125,7 +199,7 @@ var routes = [
         if(validasi == 0){
           $.ajax({
              type: "POST",
-             url: "http://10.64.5.40/sikeren/api/simpanAbsenPagi",
+             url: api_url+"simpanAbsenPagi",
              data: datas,
              processData: false,
              contentType: false,
@@ -142,6 +216,7 @@ var routes = [
                 $('.my-popup').remove();
                 $('.popup-backdrop').attr('class', 'popup-backdrop');
                 // $('.back').attr('onClick', "'setbackmenu()'");
+
              },
              error: function(data) {
               app.preloader.hide();
@@ -154,10 +229,11 @@ var routes = [
        }
 
       });
-
+      app.preloader.hide();
       },
       pageInit: function(event, page) {
         console.log("index in");
+        app.preloader.hide();
       },
       pageBeforeRemove: function(event, page) {
         console.log("index before leave");
@@ -175,8 +251,42 @@ var routes = [
   on: {
       pageBeforeIn: function(event, page) {
         console.log("index before in");
+        app.preloader.show();
       },
       pageAfterIn: function(event, page) {
+        try{
+          var video = document.getElementById('video');
+          if(navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+       // Not adding `{ audio: true }` since we only want video now
+               navigator.mediaDevices.getUserMedia({ video: true }).then(function(stream) {
+                       //video.src = window.URL.createObjectURL(stream);
+                       video.srcObject = stream;
+                       video.play();
+                   }).catch(function(e){
+                     pesan("Gagal memuat kamera : "+e,"top",5000);
+                   });
+           }
+            // Legacy code below: getUserMedia
+           else if(navigator.getUserMedia) { // Standard
+               navigator.getUserMedia({ video: true }, function(stream) {
+                   video.src = stream;
+                   video.play();
+               }, function(e){pesan("Gagal memuat kamera : "+e,"top",5000);});
+           } else if(navigator.webkitGetUserMedia) { // WebKit-prefixed
+               navigator.webkitGetUserMedia({ video: true }, function(stream){
+                   video.src = window.webkitURL.createObjectURL(stream);
+                   video.play();
+               }, function(e){pesan("Gagal memuat kamera : "+e,"top",5000);});
+           } else if(navigator.mozGetUserMedia) { // Mozilla-prefixed
+               navigator.mozGetUserMedia({ video: true }, function(stream){
+                   video.srcObject = stream;
+                   video.play();
+               }, function(e){pesan("Gagal memuat kamera : "+e,"top",5000);});
+           }else{
+             pesan("Gagal memuat kamera","top");
+           }
+         }catch(e){pesan(e,"top");}
+
         var apps = page.app;
         var dataurlimage;
         var d = new Date();
@@ -184,6 +294,7 @@ var routes = [
         var days = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
         $("#kethari").html(days[d.getDay()]+", "+d.getDate()+" "+months[d.getMonth()]+" "+d.getFullYear()+" Pukul : "+d.getHours()+":"+d.getMinutes());
          var vidw=parseInt($('#video').width());
+
          $('.absenpagi').on('click',function(){
            $('#div_canvas').html('<canvas id="canvas" width="'+vidw+'" height="385"></canvas>');
             try{
@@ -266,7 +377,7 @@ var routes = [
               if(validasi == 0){
                 $.ajax({
                    type: "POST",
-                   url: "http://10.64.5.40/sikeren/api/postSore",
+                   url: api_url+"postSore",
                    data: datas,
                    processData: false,
                    contentType: false,
@@ -290,8 +401,7 @@ var routes = [
              }
 
             });
-
-
+            app.preloader.hide();
       },
       pageInit: function(event, page) {
         console.log("index in");
@@ -326,7 +436,7 @@ var routes = [
 
           $.ajax({
              type: "POST",
-             url: "http://10.64.5.40/sikeren/api/uang_saku_bydate",
+             url: api_url+"uang_saku_bydate",
              data: no_registrasi,
              processData: false,
              contentType: false,
@@ -359,38 +469,34 @@ var routes = [
   },
   on: {
       pageBeforeIn: function(event, page) {
-
+        app.preloader.show();
       },
       pageAfterIn: function(event, page) {
 
       },
       pageInit: function(event, page) {
-        app.preloader.show();
+
         var no_registrasi = new FormData();
         var session = JSON.parse(localStorage.getItem("session"));
         var nomor_register = session.nomor_register;
         no_registrasi.append("nomor_register", nomor_register);
         var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-
           $.ajax({
              type: "POST",
-             url: "http://10.64.5.40/sikeren/api/kehadiran_bydate",
+             url: api_url+"kehadiran_bydate",
              data: no_registrasi,
              processData: false,
              contentType: false,
              success: function(data) {
                // $("#waktu").append('<option value="" hidden>Tanggal</option>');
                 var periode = data.periode;
-                //console.log(periode);
                 for(var i in periode){
                   var date = periode[i].periode.split("-");
                   var tahun = date[0];
-                  var bulan = date[1]
+                  var bulan = date[1];
                   $("#waktu_kehadiran").append('<option value="'+periode[i].periode+'">'+months[bulan-1]+" "+tahun+'</option>');
                 }
-
                 cari_kehadiran();
-
              },
              error: function(data) {
              }
@@ -418,7 +524,7 @@ var routes = [
       datas.append("nomor_register", kode_register);
       $.ajax({
          type: "POST",
-         url: "http://10.64.5.40/sikeren/api/minggurapor",
+         url: api_url+"minggurapor",
          data: datas,
          processData: false,
          contentType: false,
@@ -427,6 +533,8 @@ var routes = [
            for(var i in data){
              $("#raport-minggu").append("<option value='"+i+"'> "+data[i]+" </option>");
            }
+
+           change_raport();
 
          },
          error: function(data) {
@@ -469,11 +577,11 @@ var routes = [
   },
   on: {
       pageBeforeIn: function(event, page) {
-        console.log("index before in");
+        //console.log("index before in");
+        app.preloader.show();
       },
       pageAfterIn: function(event, page) {
-        //app.preloader.show();
-        // cari_kehadiran();
+        app.preloader.hide();
       },
       pageInit: function(event, page) {
         var no_registrasi = new FormData();
@@ -482,12 +590,11 @@ var routes = [
         no_registrasi.append("nomor_register", nomor_register);
           $.ajax({
              type: "POST",
-             url: "http://10.64.5.40/sikeren/api/budaya",
+             url: api_url+"budaya",
              data: no_registrasi,
              processData: false,
              contentType: false,
              success: function(data) {
-               //console.log(data);
                for(var i in data){
                $('.budaya-cont').append(`
                                        <div class="card card-outline">
@@ -539,23 +646,63 @@ var routes = [
   url: './pagesikeren/absen/before-abs.html',
 },
 {
-  path: '/informasi/',
-  url: './pagesikeren/informasi/informasi.html',
-},{
-  path: '/perjanjian/',
-  url: './pagesikeren/perjanjian/perjanjian.html',
+  path: '/menu-informasi/',
+  url: './pagesikeren/informasi/menu-informasi.html',
   on: {
       pageBeforeIn: function(event, page) {
         console.log("index before in");
       },
       pageAfterIn: function(event, page) {
         console.log("index after in");
+        app.preloader.show();
+        var jenis=["umum","pribadi"];
+        informasi(jenis);
+        $('.info-pribadi').on('click',function(){
+          app.preloader.show();
+          setTimeout(function(){
+            app.preloader.hide();
+          },1000);
+        });
+        $('.info-umum').on('click',function(){
+          app.preloader.show();
+          setTimeout(function(){
+            app.preloader.hide();
+          },1000);
+        });
+
+      },
+      pageInit: function(event, page) {
+        app.preloader.hide();
+        $(".info-umum").click();
+      },
+      pageBeforeRemove: function(event, page) {
+        console.log("index before leave");
+      },
+  }
+
+},
+{
+  path: '/perjanjian/',
+  url: './pagesikeren/perjanjian/perjanjian.html',
+  async(routeTo, routeFrom, resolve, reject) {
+    is_login(function(){
+      resolve({ url: 'pages/login.html' });
+    });
+  },
+  on: {
+      pageBeforeIn: function(event, page) {
+        //console.log("index before in");
+        app.preloader.show();
+      },
+      pageAfterIn: function(event, page) {
+        //console.log("index after in");
+        app.preloader.hide();
       },
       pageInit: function(event, page) {
         var no_registrasi = new FormData();
         var session = JSON.parse(localStorage.getItem("session"));
         var kode_register = session.kode_register;
-        $('#pdf_perjanjian').attr('src','http://10.64.5.40/sikeren/api/preview_file/'+kode_register+'');
+        $('#pdf_perjanjian').attr('src',api_url+'preview_file/'+kode_register+'');
       },
       pageBeforeRemove: function(event, page) {
         console.log("index before leave");
@@ -573,10 +720,10 @@ async(routeTo, routeFrom, resolve, reject) {
 on: {
     pageBeforeIn: function(event, page) {
       console.log("index before in");
+      app.preloader.show();
     },
     pageAfterIn: function(event, page) {
-      //app.preloader.show();
-      // cari_kehadiran();
+      app.preloader.hide();
     },
     pageInit: function(event, page) {
       var no_registrasi = new FormData();
@@ -585,7 +732,7 @@ on: {
       no_registrasi.append("nomor_register", nomor_register);
         $.ajax({
            type: "POST",
-           url: "http://10.64.5.40/sikeren/api/budaya",
+           url: api_url+"budaya",
            data: no_registrasi,
            processData: false,
            contentType: false,
@@ -633,8 +780,6 @@ on: {
                                             </div>
                                           </div>
                                         </div>`);
-
-
                var judul = 1;
                var subjudul = 1;
                $('.div_judul_'+judul+' , .div_judul_'+judul+'_subjudul_'+subjudul+'').attr('style','display:block');
@@ -661,9 +806,6 @@ on: {
 
 
          });
-
-
-
     },
     pageBeforeRemove: function(event, page) {
       console.log("index before leave");
@@ -673,13 +815,18 @@ on: {
 {
 path: '/ratting/',
 url: './pagesikeren/absen/ratting.html',
+async(routeTo, routeFrom, resolve, reject) {
+  is_login(function(){
+    resolve({ url: 'pages/login.html' });
+  });
+},
 on: {
     pageBeforeIn: function(event, page) {
       console.log("index before in");
+      app.preloader.show();
     },
     pageAfterIn: function(event, page) {
-      //app.preloader.show();
-      // cari_kehadiran();
+      app.preloader.hide();
     },
     pageInit: function(event, page) {
       var coderatting = localStorage.getItem("coderating");
@@ -705,20 +852,23 @@ on: {
 {
 path: '/total-ratting/',
 url: './pagesikeren/absen/total-ratting.html',
+async(routeTo, routeFrom, resolve, reject) {
+  is_login(function(){
+    resolve({ url: 'pages/login.html' });
+  });
+},
 on: {
     pageBeforeIn: function(event, page) {
-
+      app.preloader.show();
     },
     pageAfterIn: function(event, page) {
-      //app.preloader.show();
-      // cari_kehadiran();
+      app.preloader.hide();
     },
     pageInit: function(event, page) {
       var d = new Date();
       var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
       var days = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
       var data = JSON.parse(localStorage.getItem('kinerjaharian'));
-
       var date = data.value['tanggal'].split("-");
       var tanggal = date[2];
       var bulan = date[1];
@@ -750,24 +900,123 @@ on: {
 {
   path: '/biodata/',
   url: './pagesikeren/biodata/biodata.html',
+  async(routeTo, routeFrom, resolve, reject) {
+    is_login(function(){
+      resolve({ url: 'pages/login.html' });
+    });
+  },
   on: {
       pageBeforeIn: function(event, page) {
         console.log("index before in");
       },
       pageAfterIn: function(event, page) {
+        app.preloader.show();
         biodata();
-
       },
       pageInit: function(event, page) {
-        // var session = JSON.parse(localStorage.getItem("session"));
-        // $(".nama").html(session.nama_panggilan);
-        // $(".profile").attr('src', 'http://10.64.5.40/sikeren/api/preview_foto/'+session.nomor_register);
-
+        app.preloader.hide();
       },
       pageBeforeRemove: function(event, page) {
         console.log("index before leave");
       },
     }
-}
+},
+{
+  path: '/informasi-pribadi/',
+  url: './pagesikeren/informasi/informasi-pribadi.html',
+  async(routeTo, routeFrom, resolve, reject) {
+    is_login(function(){
+      resolve({ url: 'pages/login.html' });
+    });
+  },
+  on: {
+      pageBeforeIn: function(event, page) {
+        console.log("index before in");
+      },
+      pageAfterIn: function(event, page) {
+        console.log("index after in");
+      },
+      pageInit: function(event, page) {
+        var datas = new FormData();
+        var session = JSON.parse(localStorage.getItem("session"));
+        var kode_register = session.kode_register;
+        datas.append("kode_register", kode_register);
+          $.ajax({
+             type: "POST",
+             url: api_url+"informasi/pribadi",
+             data: datas,
+             processData: false,
+             contentType: false,
+             success: function(data) {
+               console.log(data);
+             },
+             error: function(data) {
+             }
+           });
+      },
+      pageBeforeRemove: function(event, page) {
+        console.log("index before leave");
+      },
+  }
+},
+{
+  path: '/informasi-umum/',
+  url: './pagesikeren/informasi/informasi-umum.html',
+  async(routeTo, routeFrom, resolve, reject) {
+    is_login(function(){
+      resolve({ url: 'pages/login.html' });
+    });
+  },
+  on: {
+      pageBeforeIn: function(event, page) {
+        console.log("index before in");
+      },
+      pageAfterIn: function(event, page) {
+        console.log("index after in");
+      },
+      pageInit: function(event, page) {
+        var datas = new FormData();
+        var session = JSON.parse(localStorage.getItem("session"));
+        var kode_register = session.kode_register;
+        datas.append("kode_register", kode_register);
+          $.ajax({
+             type: "POST",
+             url: api_url+"informasi/umum",
+             data: datas,
+             processData: false,
+             contentType: false,
+             success: function(data) {
+               console.log(data);
+               for(var i in data){
+                 var mulai_publish = data[i].mulai_publish.split(/[\s-]/);
+                 var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+                 var date = ""+mulai_publish[2]+" "+months[mulai_publish[1]-1]+" "+mulai_publish[0];
+                 console.log(date);
+
+                 $('.i_umum-cont').append(`    <div class="card demo-card-header-pic">
+                       <div id="image-informasi"></div>
+                       <div class="card-content card-content-padding">
+                          <p class="date">`+date+`</p>
+                         <p class="header"><H3>`+data[i].judul+`</H3></p>
+                         <p>`+data[i].short_desc+`</p>
+                       </div>
+                       <div class="card-footer"><a href="#" class="link">Read more</a></div>
+                     </div>`);
+
+                  if(data[i].thumbnail != null){
+                    $('#image-informasi').attr('style','background-image:url(http://10.64.5.40/sikeren/api/preview_image_informasi/sikeren.png)');
+                    $('#image-informasi').attr('class','card-header align-items-flex-end');
+                  }
+                }
+             },
+             error: function(data) {
+             }
+           });
+      },
+      pageBeforeRemove: function(event, page) {
+        console.log("index before leave");
+      },
+  }
+},
 
 ];

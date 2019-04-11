@@ -1,0 +1,31 @@
+{
+  "short_name": "SiKeren Mobile",
+  "name": "SiKeren Mobile",
+  "theme_color": "#3a57c4",
+  "background_color": "#3a57c4",
+  "display": "standalone",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "assets/img/logo_android_magang.png",
+      "type": "image/png",
+      "sizes": "48x48"
+    },
+    {
+      "src": "assets/img/logo_android_magang.png",
+      "type": "image/png",
+      "sizes": "96x96"
+    },
+    {
+      "src": "assets/img/logo_android_magang.png",
+      "type": "image/png",
+      "sizes": "144x144"
+    },
+    {
+      "src": "assets/img/logo_android_magang.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    }
+  ],
+  "start_url": "index.php"
+}
