@@ -182,51 +182,56 @@ var routes = [
 
       }
       $('.presensi_pagi').on('click',function(){
-        app.preloader.show();
-        var session = JSON.parse(localStorage.getItem("session"));
-        var nomor_register = session.nomor_register;
-        var validasi = 0;
-       	var datas = new FormData();
-        datas.append("nomor_register", nomor_register);
-        datas.append("selfie_pagi", dataurlimage);
-        for(var k in data_pertanyaan){
-          var value = $('input[name="quisioner_'+data_pertanyaan[k].id_quisioner+'"]:checked').val();
-          if(value == null){
-            validasi++;
+        dialog("Konfirmasi","Dengan menekan tombol yes maka presensi akan di simpan",function(){
+          app.preloader.show();
+          var session = JSON.parse(localStorage.getItem("session"));
+          var nomor_register = session.nomor_register;
+          var validasi = 0;
+         	var datas = new FormData();
+          datas.append("nomor_register", nomor_register);
+          datas.append("selfie_pagi", dataurlimage);
+          for(var k in data_pertanyaan){
+            var value = $('input[name="quisioner_'+data_pertanyaan[k].id_quisioner+'"]:checked').val();
+            if(value == null){
+              validasi++;
+            }
+            datas.append(data_pertanyaan[k].id_quisioner , value);
           }
-          datas.append(data_pertanyaan[k].id_quisioner , value);
-        }
-        if(validasi == 0){
-          $.ajax({
-             type: "POST",
-             url: api_url+"simpanAbsenPagi",
-             data: datas,
-             processData: false,
-             contentType: false,
-             success: function(data) {
-                app.preloader.hide();
-                pesan('Berhasil Absen Pagi');
-                $('.page-previous').remove();
-                // barcode
-                localStorage.setItem("coderating", data.coderating);
-                // get custom tanggal
-                // page
-                apps.router.navigate('/ratting/');
-                $('.my-popup').attr("class","popup my-popup");
-                $('.my-popup').remove();
-                $('.popup-backdrop').attr('class', 'popup-backdrop');
-                // $('.back').attr('onClick', "'setbackmenu()'");
+          if(validasi == 0){
+            $.ajax({
+               type: "POST",
+               url: api_url+"simpanAbsenPagi",
+               data: datas,
+               processData: false,
+               contentType: false,
+               success: function(data) {
+                  app.preloader.hide();
+                  pesan('Berhasil Absen Pagi');
+                  $('.page-previous').remove();
+                  // barcode
+                  localStorage.setItem("coderating", data.coderating);
+                  // get custom tanggal
+                  // page
+                  apps.router.navigate('/ratting/');
+                  $('.my-popup').attr("class","popup my-popup");
+                  $('.my-popup').remove();
+                  $('.popup-backdrop').attr('class', 'popup-backdrop');
+                  // $('.back').attr('onClick', "'setbackmenu()'");
 
-             },
-             error: function(data) {
-              app.preloader.hide();
-              absen_pagi_gagal.open();
-             }
-           });
-       }else{
-         app.preloader.hide();
-         isi_semua.open();
-       }
+               },
+               error: function(data) {
+                app.preloader.hide();
+                absen_pagi_gagal.open();
+               }
+             });
+         }else{
+           app.preloader.hide();
+           isi_semua.open();
+         }
+         ////===== yes
+        },function(){
+
+        });
 
       });
       app.preloader.hide();
@@ -353,53 +358,58 @@ var routes = [
                     </div>`);
             }
             $('.presensi_sore').on('click',function(){
-              app.preloader.show();
-              var session = JSON.parse(localStorage.getItem("session"));
-              var nomor_register = session.nomor_register;
-              var validasi = 0;
-              var datas = new FormData();
-              datas.append("nomor_register", nomor_register);
-              datas.append("selfie_sore", dataurlimage);
-              for(var k in data_pertanyaan){
-                var value = $('input[name="quisioner_'+data_pertanyaan[k].id_quisioner+'"]:checked').val();
-                if(value == null){
-                  validasi++;
+              dialog("Konfirmasi","Dengan menekan tombol yes maka presensi akan di simpan",
+              function(){
+                app.preloader.show();
+                var session = JSON.parse(localStorage.getItem("session"));
+                var nomor_register = session.nomor_register;
+                var validasi = 0;
+                var datas = new FormData();
+                datas.append("nomor_register", nomor_register);
+                datas.append("selfie_sore", dataurlimage);
+                for(var k in data_pertanyaan){
+                  var value = $('input[name="quisioner_'+data_pertanyaan[k].id_quisioner+'"]:checked').val();
+                  if(value == null){
+                    validasi++;
+                  }
+                  datas.append(data_pertanyaan[k].id_quisioner , value);
                 }
-                datas.append(data_pertanyaan[k].id_quisioner , value);
-              }
-              for(var k in data_pertanyaan_transaksi){
-                var value = $('input[name="quisioner_transaksi_'+data_pertanyaan_transaksi[k].id_quisioner+'"]').val();
-                if(value == ''){
-                  validasi++;
+                for(var k in data_pertanyaan_transaksi){
+                  var value = $('input[name="quisioner_transaksi_'+data_pertanyaan_transaksi[k].id_quisioner+'"]').val();
+                  if(value == ''){
+                    validasi++;
+                  }
+                  datas.append(data_pertanyaan_transaksi[k].id_quisioner , value);
                 }
-                datas.append(data_pertanyaan_transaksi[k].id_quisioner , value);
-              }
-              if(validasi == 0){
-                $.ajax({
-                   type: "POST",
-                   url: api_url+"postSore",
-                   data: datas,
-                   processData: false,
-                   contentType: false,
-                   success: function(data) {
-                     app.preloader.hide();
-                     $('.page-previous').remove();
-                     localStorage.setItem("kinerjaharian", JSON.stringify(data));
-                     pesan('Berhasil Absen Sore');
-                     apps.router.navigate('/total-ratting/');
-                     $('.my-popup').attr("class","popup my-popup");
-                     $('.my-popup').remove();
-                     $('.popup-backdrop').attr('class', 'popup-backdrop');
-                   },
-                   error: function(data) {
+                if(validasi == 0){
+                  $.ajax({
+                     type: "POST",
+                     url: api_url+"postSore",
+                     data: datas,
+                     processData: false,
+                     contentType: false,
+                     success: function(data) {
+                       app.preloader.hide();
+                       $('.page-previous').remove();
+                       localStorage.setItem("kinerjaharian", JSON.stringify(data));
+                       pesan('Berhasil Absen Sore');
+                       apps.router.navigate('/total-ratting/');
+                       $('.my-popup').attr("class","popup my-popup");
+                       $('.my-popup').remove();
+                       $('.popup-backdrop').attr('class', 'popup-backdrop');
+                     },
+                     error: function(data) {
 
-                   }
-                 });
-             }else{
-               app.preloader.hide();
-               isi_semua.open();
-             }
-
+                     }
+                   });
+               }else{
+                 app.preloader.hide();
+                 isi_semua.open();
+               }
+               // ==== YES
+              },function(){
+                // === NO
+              });
             });
             app.preloader.hide();
       },
@@ -949,6 +959,7 @@ on: {
              contentType: false,
              success: function(data) {
                console.log(data);
+
              },
              error: function(data) {
              }
@@ -992,7 +1003,6 @@ on: {
                  var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
                  var date = ""+mulai_publish[2]+" "+months[mulai_publish[1]-1]+" "+mulai_publish[0];
                  console.log(date);
-
                  $('.i_umum-cont').append(`    <div class="card demo-card-header-pic">
                        <div id="image-informasi"></div>
                        <div class="card-content card-content-padding">
@@ -1004,9 +1014,10 @@ on: {
                      </div>`);
 
                   if(data[i].thumbnail != null){
-                    $('#image-informasi').attr('style','background-image:url(http://10.64.5.40/sikeren/api/preview_image_informasi/sikeren.png)');
+                    $('#image-informasi').attr('style','background-image:url('+api_url+'preview_image_informasi/'+data[i].thumbnail+')');
                     $('#image-informasi').attr('class','card-header align-items-flex-end');
                   }
+                  popup_info(data,jenis[1],date);
                 }
              },
              error: function(data) {
@@ -1015,6 +1026,120 @@ on: {
       },
       pageBeforeRemove: function(event, page) {
         console.log("index before leave");
+      },
+  }
+},
+{
+  path: '/notifikasi/',
+  url: './pagesikeren/informasi/notifikasi.html',
+  on: {
+      pageBeforeIn: function(event, page) {
+        app.preloader.show();
+      },
+      pageAfterIn: function(event, page) {
+        app.preloader.hide();
+      },
+      pageInit: function(event, page) {
+        var datas = new FormData();
+        var session = JSON.parse(localStorage.getItem("session"));
+        var nomor_register = session.nomor_register;
+        datas.append("nomor_register", nomor_register);
+          $.ajax({
+             type: "POST",
+             url: api_url+"informasi/notifread",
+             data: datas,
+             processData: false,
+             contentType: false,
+             success: function(data) {
+               console.log(data);
+               for(var i in data){
+        				 var mulai_publish = data[i].mulai_publish.split(/[\s-]/);
+        				 var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+        				 var date = ""+mulai_publish[2]+" "+months[mulai_publish[1]-1]+" "+mulai_publish[0];
+        				 //console.log(date);
+        				 $('.i_pribadi-cont').append(`<div class="card demo-card-header-pic">
+        																		 <div id="`+data[i].jenis+`image-informasi`+i+`">
+        																		 </div>
+        																		<div class="card-content card-content-padding">
+        																			<p class="date">`+date+`</p>
+        																			<p class="header"><H3>`+data[i].judul+`</H3></p>
+        																			<p>`+data[i].short_desc+`</p>
+        																		</div>
+        																		<div class="card-footer">
+        																			<a href="#" class="link add-task-link popup-open" data-popup=".`+data[i].jenis+`_add-task-popup_`+i+`">Read more</a>
+        																		</div>
+        																	</div>`);
+        					if(data[i].thumbnail != null){
+        						$('#'+data[i].jenis+'image-informasi'+i+'').attr('style','background-image:url('+api_url+'preview_image_informasi/'+data[i].thumbnail+')');
+        						$('#'+data[i].jenis+'image-informasi'+i+'').attr('class','card-header align-items-flex-end');
+        					}
+        				}
+                popup_info(data,data[i].jenis,date);
+             },
+             error: function(data) {
+               pesan("gagal memuat informasi","top");
+             }
+           });
+      },
+      pageBeforeRemove: function(event, page) {
+
+      },
+  }
+},
+{
+  path: '/user-guide/',
+  url: './pagesikeren/user-guide.html',
+  on: {
+      pageBeforeIn: function(event, page) {
+        app.preloader.show();
+      },
+      pageAfterIn: function(event, page) {
+        app.preloader.hide();
+      },
+      pageInit: function(event, page) {
+        var datas = new FormData();
+        var session = JSON.parse(localStorage.getItem("session"));
+        var nomor_register = session.nomor_register;
+        datas.append("nomor_register", nomor_register);
+          $.ajax({
+             type: "POST",
+             url: api_url+"informasi/notifread",
+             data: datas,
+             processData: false,
+             contentType: false,
+             success: function(data) {
+               console.log(data);
+               for(var i in data){
+        				 var mulai_publish = data[i].mulai_publish.split(/[\s-]/);
+        				 var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+        				 var date = ""+mulai_publish[2]+" "+months[mulai_publish[1]-1]+" "+mulai_publish[0];
+        				 //console.log(date);
+        				 $('.i_pribadi-cont').append(`<div class="card demo-card-header-pic">
+        																		 <div id="`+data[i].jenis+`image-informasi`+i+`">
+        																		 </div>
+        																		<div class="card-content card-content-padding">
+        																			<p class="date">`+date+`</p>
+        																			<p class="header"><H3>`+data[i].judul+`</H3></p>
+        																			<p>`+data[i].short_desc+`</p>
+        																		</div>
+        																		<div class="card-footer">
+        																			<a href="#" class="link add-task-link popup-open" data-popup=".`+data[i].jenis+`_add-task-popup_`+i+`">Read more</a>
+        																		</div>
+        																	</div>`);
+        					if(data[i].thumbnail != null){
+        						$('#'+data[i].jenis+'image-informasi'+i+'').attr('style','background-image:url('+api_url+'preview_image_informasi/'+data[i].thumbnail+')');
+        						$('#'+data[i].jenis+'image-informasi'+i+'').attr('class','card-header align-items-flex-end');
+        					}
+        				}
+                popup_info(data,data[i].jenis,date);
+             },
+             error: function(data) {
+               pesan("gagal memuat informasi","top");
+             }
+           });
+      },
+      pageBeforeRemove: function(event, page) {
+
       },
   }
 },

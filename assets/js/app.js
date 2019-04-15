@@ -593,10 +593,6 @@ function informasi(jenis){
 							$('#'+jenis[0]+'image-informasi'+i+'').attr('class','card-header align-items-flex-end');
 						}
 					}
-					if(jenis[2]){
-						localStorage.setItem('notif', JSON.stringify(jenis[2]));
-						app.router.navigate('/menu-informasi/');
-					}
 					popup_info(data,jenis[0],date);
 					app.preloader.hide();
 			 },
@@ -718,19 +714,100 @@ function notifikasi(){
 		 contentType: false,
 		 success: function(data) {
 				//console.log(data[0].informasi_unread);
-				if(data[0].informasi_unread){
+				if(data[0].informasi_unread>0){
 					$(".notif").html('notifications<span class="badge color-red bg">'+data[0].informasi_unread+'</span>');
-					$(".isi-notif").attr('value', ''+data[0].informasi_unread+'');
+					$(".isi-notif").attr('href', '/notifikasi/');
 					var jenis=["umum","pribadi",data[0].informasi_unread];
-					$(".isi-notif").on('click',function(){
-	          informasi(jenis);
-	        });
+
 				}else {
 					$(".notif").html("notifications");
 					$(".bg").remove();
+					//$(".isi-notif").attr('href', '/notifikasi/');
+					//app.router.navigate('/notifikasi/');
 				}
 		 },
 		 error: function(data) {
 		 }
 	 });
+}
+function dialog(title="",text="",callbackyes,callbackno){
+  app.dialog.create({
+      title: title,
+      text: text,
+      buttons: [{
+              text: 'No',
+              onClick: callbackno
+          },
+          {
+              text: 'Yes',
+              onClick: callbackyes
+          }
+      ],
+      verticalButtons: false,
+  }).open();
+};
+function geolocation(){
+	if (navigator.geolocation) {
+		var res = {};
+		var options = {
+		  enableHighAccuracy: true,
+		  timeout: 5000,
+		  maximumAge: 0
+		};
+    navigator.geolocation.getCurrentPosition(function(position){
+				$.get("https://maps.googleapis.com/maps/api/geocode/json?latlng="+position.coords.latitude+","+position.coords.longitude+"&key=AIzaSyAigUXwdBTeeNNYgmFBhnKcUGxViyZasq8&sensor=true",function(data,status){
+					if(status=="success" && data.status == "OK"){
+						res = {
+							"lat":position.coords.latitude,
+							"long":position.coords.longitude,
+							"address":data.results[0].formatted_address
+						};
+						return res;
+					}else{
+						res = {
+							"lat":position.coords.latitude,
+							"long":position.coords.longitude,
+							"address":"Alamat tidak terdeteksi"
+						};
+						return res;
+					}
+				}).fail(function(response){
+					res = {
+						"lat":position.coords.latitude,
+						"long":position.coords.longitude,
+						"address":"Alamat tidak terdeteksi"
+					};
+					return res;
+				});
+		}, function(error){
+			switch(error.code) {
+		    case error.PERMISSION_DENIED:
+  				pesan("User denied the request for Geolocation.","top",4000);
+		      break;
+		    case error.POSITION_UNAVAILABLE:
+					pesan("Location information is unavailable.","top",4000);
+		      break;
+		    case error.TIMEOUT:
+				  pesan("The request to get user location timed out.","top",4000);
+		      break;
+		    case error.UNKNOWN_ERROR:
+					pesan("An unknown error occurred","top",4000);
+		      break;
+		  }
+			res = {
+				"lat":0,
+				"long":0,
+				"address":"Alamat tidak terdeteksi"
+			};
+			return res;
+		},options);
+  } else {
+    pesan("Not Support Geo Navigator, Update Your Browser","top",4000);
+		res = {
+			"lat":0,
+			"long":0,
+			"address":"Alamat tidak terdeteksi"
+		};
+		return res;
+  }
 }
